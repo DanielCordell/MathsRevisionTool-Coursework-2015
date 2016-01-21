@@ -253,3 +253,5 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+*.vcxproj
+Equations.vcxproj.filters
