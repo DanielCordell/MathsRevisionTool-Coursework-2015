@@ -1,4 +1,4 @@
-
+#pragma once
 // Returns an integer value between min and max inclusive
 int getRand(int min, int max);
 

@@ -4,20 +4,20 @@
 
 int Settings::volumePercent;
 bool Settings::volumeMute;
-std::map<std::string, bool> Settings::questionSettings;
+std::map<questionTypes, bool> Settings::questionSettings;
 
 
 Settings::Settings() {
 	settingsFile = std::fstream("Settings/settings.txt");
 
-	questionSettings["qstAdd"] = true;
-	questionSettings["qstSub"] = true;
-	questionSettings["qstMlt"] = true;
-	questionSettings["qstDvd"] = true;
-	questionSettings["qstMfr"] = true;
-	questionSettings["qstFns"] = true;
-	questionSettings["qstQdr"] = true;
-	questionSettings["qstSim"] = true;
+	questionSettings.insert(std::make_pair(questionTypes::add, true));
+	questionSettings.insert(std::make_pair(questionTypes::sub, true));
+	questionSettings.insert(std::make_pair(questionTypes::dvd, true));
+	questionSettings.insert(std::make_pair(questionTypes::mlt, true));
+	questionSettings.insert(std::make_pair(questionTypes::fns, true));
+	questionSettings.insert(std::make_pair(questionTypes::mfr, true));
+	questionSettings.insert(std::make_pair(questionTypes::qdr, true));
+	questionSettings.insert(std::make_pair(questionTypes::sim, true));
 }
 
 Settings::~Settings() {
@@ -27,18 +27,16 @@ Settings::~Settings() {
 
 	settingsFile << "// Volume Settings // \n";
 	settingsFile << "volPer:" << Settings::volumePercent << "\n";
-	std::cout << Settings::volumePercent << "\n";
-	std::cout << Settings::volumeMute << "\n";
 	settingsFile << "volMut:" << Settings::volumeMute << "\n";
 	settingsFile << "// Question Settings // \n";
-	settingsFile << "qstAdd:" << questionSettings["qstAdd"] << "\n";
-	settingsFile << "qstSub:" << questionSettings["qstSub"] << "\n";
-	settingsFile << "qstMlt:" << questionSettings["qstMlt"] << "\n";
-	settingsFile << "qstDvd:" << questionSettings["qstDvd"] << "\n";
-	settingsFile << "qstMfr:" << questionSettings["qstMfr"] << "\n";
-	settingsFile << "qstFns:" << questionSettings["qstFns"] << "\n";
-	settingsFile << "qstQdr:" << questionSettings["qstQdr"] << "\n";
-	settingsFile << "qstSim:" << questionSettings["qstSim"] << "\n";
+	settingsFile << "qstAdd:" << questionSettings[questionTypes::add] << "\n";
+	settingsFile << "qstSub:" << questionSettings[questionTypes::sub] << "\n";
+	settingsFile << "qstMlt:" << questionSettings[questionTypes::mlt] << "\n";
+	settingsFile << "qstDvd:" << questionSettings[questionTypes::dvd] << "\n";
+	settingsFile << "qstMfr:" << questionSettings[questionTypes::mfr] << "\n";
+	settingsFile << "qstFns:" << questionSettings[questionTypes::fns] << "\n";
+	settingsFile << "qstQdr:" << questionSettings[questionTypes::qdr] << "\n";
+	settingsFile << "qstSim:" << questionSettings[questionTypes::sim] << "\n";
 	settingsFile << "// End of Settings //";
 	settingsFile.close();
 }
@@ -84,8 +82,8 @@ void Settings::loadSettingsFromFile(std::string settingsLine) {
 	}
 
 	// If the setting describes a question being active or not
-	else if (questionSettings.find(settingName) != questionSettings.end()) {
-		questionSettings[settingName] = settingValue;
+	else if (questionSettings.find(stringToEnum(settingName)) != questionSettings.end()) {
+		questionSettings[stringToEnum(settingName)] = settingValue;
 	}
 
 	else {
@@ -125,26 +123,14 @@ void Settings::initSettings() {
 	settingsFile.close();
 }
 
-std::string Settings::enumToString(questionTypes questionEnum) {
-
-	switch (questionEnum) {
-	case questionTypes::add:
-		return "qstAdd";
-	case questionTypes::sub:
-		return "qstSub";
-	case questionTypes::mlt:
-		return "qstMlt";
-	case questionTypes::dvd:
-		return "qstDvd";
-	case questionTypes::fns:
-		return "qstFns";
-	case questionTypes::mfr:
-		return "qstMfr";
-	case questionTypes::qdr:
-		return "qstQdr";
-	case questionTypes::sim:
-		return "qstSim";
-	default:
-		return "qstAdd"; //Should never happen
-	}
+questionTypes Settings::stringToEnum(std::string questionString) {
+	if (questionString == "qstAdd")			return questionTypes::add;
+	else if (questionString == "qstSub")	return questionTypes::sub;
+	else if (questionString == "qstMlt")	return questionTypes::mlt;
+	else if (questionString == "qstDvd")	return questionTypes::dvd;
+	else if (questionString == "qstFns")	return questionTypes::fns;
+	else if (questionString == "qstMfr")	return questionTypes::mfr;
+	else if (questionString == "qstQdr")	return questionTypes::qdr;
+	else if (questionString == "qstSim")	return questionTypes::sim;
+	else									return questionTypes::add; //Should never happen
 }

@@ -19,13 +19,12 @@ private:
 public:
 	Settings();
 	~Settings();
-	static std::map<std::string, bool> questionSettings;
+	static std::map<questionTypes, bool> questionSettings;
 	static bool volumeMute;
 	static int volumePercent;
 	void initSettings();
 	void loadSettingsFromFile(std::string);
 	void generateSettingsFile();
-	std::string enumToString(questionTypes);
 	questionTypes stringToEnum(std::string);
 
 };

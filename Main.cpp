@@ -19,57 +19,6 @@
 
 
 //TODO Comments
-bool gameLoop() {
-	std::cout << "Enter a command ('help' for a list of commands): ";
-	std::string command;
-	std::cin >> command;
-	std::transform(command.begin(), command.end(), command.begin(), ::tolower);
-	if (command == "quit")
-		return true;
-
-	else if (command == "help") {
-		using std::cout;
-
-		cout << "\n########################\n";
-		cout << "List of Commands:\n\n";
-		cout << "quadratic\n";
-		cout << "add\n";
-		cout << "subtract\n";
-		cout << "multiply\n";
-		cout << "divide\n";
-		cout << "pythag\n";
-		cout << "trig\n";
-		cout << "functions\n";
-		cout << "simultaneous\n";
-		cout << "multiplyfraction\n";
-		cout << "########################\n\n";
-	}
-	else if (command == "quadratic")
-		questionType::quadratic();
-	else if (command == "add")
-		questionType::add();
-	else if (command == "subtract")
-		questionType::subtract();
-	else if (command == "multiply")
-		questionType::multiply();
-	else if (command == "divide")
-		questionType::divide();
-	else if (command == "multiplyfraction")
-		questionType::multiplyfraction();
-	else if (command == "functions")
-		questionType::functions();
-	else if (command == "simultaneous")
-		questionType::simultaneous();
-	/*
-	else if (command == "pythag")
-		questionType::pythag();
-	else if (command == "trig")
-		questionType::trig();
-	*/
-	else
-		std::cout << "Not a valid command...\n\n";
-	return false;
-}
 
 int main() {
 

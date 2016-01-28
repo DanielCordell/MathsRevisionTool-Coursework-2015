@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include "Headers\Rand.h"
+#include <iostream>
 
 // Returns an integer value between min and max inclusive
 int getRand(int min, int max) {

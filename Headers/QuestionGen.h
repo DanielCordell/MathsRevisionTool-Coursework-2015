@@ -1,4 +1,6 @@
-#include "Screen2.h"
+#pragma once
+#include <utility>
+#include <string>
 //Class that stores the question generators
 class questionGenerator {
 public:

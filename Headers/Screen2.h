@@ -17,10 +17,10 @@ private:
 	sf::Clock gameClock;
 	questionGenerator questionGen;
 	std::pair<std::string, std::string> questionStore;
-
-	sf::Text questionAnswer;
 	bool questionAnswered;
 	bool questionCorrect;
+	int scoreCount;
+	int livesCount;
 public:
 	int Run(sf::RenderWindow &window);
 	bool Init();

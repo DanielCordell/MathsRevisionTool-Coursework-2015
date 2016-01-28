@@ -1,5 +1,6 @@
 #include "Headers/Screen2.h"
 #include "Headers/Constants.h"
+#include <iostream>
 
 //Game Screen
 
@@ -9,25 +10,22 @@ bool screen2::Init() {
 		|| !backgroundTexture.loadFromFile("Resources/backgroundGame.png")){
 		return false;
 	}	
-		questionAnswered = false;
-		questionCorrect = false;
+		questionAnswered = true;
 
 	//Initialize Background
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
 	//Initializing Text Values
-	screenTitle = sf::Text("", font, 80);
+	screenTitle = sf::Text("", font, 40);
 	buttonBackToMenu = sf::Text("Done", font, 60);
 	userInputText = sf::Text("", font, 40);
 	userInputValidText = sf::Text("", font, 20);
-	questionAnswer = sf::Text("", font, 40);
 
 	//Positioning Title and Buttons
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
-	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	screenTitle.setPosition(WINDOW_X / 2, 80);
+	screenTitle.setPosition(10,10);
 	screenTitle.setColor(sf::Color::White);
 
 	textRect = buttonBackToMenu.getLocalBounds();
@@ -50,8 +48,6 @@ bool screen2::Init() {
 	userInputCursorBlink.setSize(sf::Vector2f(WINDOW_X / 196.0f, 2 * userInputBox.getSize().y / 3.0f));
 	userInputCursorBlink.setOrigin(0, userInputCursorBlink.getSize().y / 2.0f);
 	userInputCursorBlink.setPosition(userInputText.getPosition().x, userInputText.getPosition().y);
-	
-	GenerateQuestion();
 	return true;
 }
 
@@ -83,7 +79,7 @@ int screen2::Events(sf::RenderWindow & window)
 				}
 
 			// Detect if entered text is a valid symbol
-			if (textInput == '.' || textInput == '/') validCharacter = true;
+			else if (textInput == '.' || textInput == '/' || textInput == '-') validCharacter = true;
 			if (validCharacter) {
 				if (userInputText.getString().getSize() < 16) {
 					userInputText.setString(userInputText.getString() + textInput);
@@ -95,7 +91,7 @@ int screen2::Events(sf::RenderWindow & window)
 				}
 			}
 			else {
-				userInputValidText.setString("Please enter a valid character:\n(0 - 9, '/' and '.')");
+				userInputValidText.setString("Please enter a valid character:\n(0 - 9, '/', '.' and '-')");
 				userInputValidText.setColor(sf::Color::White);
 			}
 			
@@ -103,6 +99,14 @@ int screen2::Events(sf::RenderWindow & window)
 			if (textInput == 8) {
 				userInputText.setString(userInputText.getString().substring(0, userInputText.getString().getSize() - 1));
 				userInputValidText.setColor(sf::Color::Transparent);
+			}
+			if (textInput == 13) {
+				userInputValidText.setColor(sf::Color::Transparent);
+			}
+		}
+		if (event.type == sf::Event::KeyPressed) {
+			if (event.key.code == sf::Keyboard::Return) {
+				questionAnswered = true;
 			}
 		}
 	}
@@ -142,9 +146,18 @@ void screen2::Update()
 		userInputCursorBlink.setFillColor(sf::Color::Transparent);
 	}
 
-	if (questionCorrect) {
+	if (questionAnswered) {
+		if (questionStore.second == userInputText.getString()) {
+			userInputText.setString("");
+			scoreCount++;
+		}
+		else {
+			livesCount--;
+			if (livesCount == 0) {
+				//gameOver();
+			}
+		}
 		GenerateQuestion();
-
 	}
 }
 
@@ -163,7 +176,9 @@ int screen2::Run(sf::RenderWindow &window) {
 }
 
 void screen2::GenerateQuestion() {
-	auto newQuestion = questionGen.chooseQuestion();
-	screenTitle.setString(newQuestion.first);
-	questionAnswer.setString(newQuestion.second);
+	userInputText.setString("");
+	questionStore = questionGen.chooseQuestion();
+	screenTitle.setString(questionStore.first);
+	questionAnswered = false;
+	std::cout << questionStore.second << "\n";
 }

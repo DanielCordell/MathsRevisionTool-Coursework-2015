@@ -222,28 +222,28 @@ int screen1::Events(sf::RenderWindow & window) {
 				}
 
 				else if (questionButtonAddBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstAdd"] = !Settings::questionSettings["qstAdd"];
+					Settings::questionSettings[questionTypes::add] = !Settings::questionSettings[questionTypes::add];
 				}
 				else if (questionButtonSubtractBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstSub"] = !Settings::questionSettings["qstSub"];
+					Settings::questionSettings[questionTypes::sub] = !Settings::questionSettings[questionTypes::sub];
 				}
 				else if (questionButtonMultiplyBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstMlt"] = !Settings::questionSettings["qstMlt"];
+					Settings::questionSettings[questionTypes::mlt] = !Settings::questionSettings[questionTypes::mlt];
 				}
 				else if (questionButtonDivideBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstDvd"] = !Settings::questionSettings["qstDvd"];
+					Settings::questionSettings[questionTypes::dvd] = !Settings::questionSettings[questionTypes::dvd];
 				}
 				else if (questionButtonMultiplyFractionBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstMfr"] = !Settings::questionSettings["qstMfr"];
+					Settings::questionSettings[questionTypes::mfr] = !Settings::questionSettings[questionTypes::mfr];
 				}
 				else if (questionButtonFunctionsBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstFns"] = !Settings::questionSettings["qstFns"];
+					Settings::questionSettings[questionTypes::fns] = !Settings::questionSettings[questionTypes::fns];
 				}
 				else if (questionButtonQuadraticBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstQdr"] = !Settings::questionSettings["qstQdr"];
+					Settings::questionSettings[questionTypes::qdr] = !Settings::questionSettings[questionTypes::qdr];
 				}
 				else if (questionButtonSimultaneousBack.getGlobalBounds().contains(mousePos)) {
-					Settings::questionSettings["qstSim"] = !Settings::questionSettings["qstSim"];
+					Settings::questionSettings[questionTypes::sim] = !Settings::questionSettings[questionTypes::sim];
 				}
 			}
 		}
@@ -278,21 +278,21 @@ void screen1::Update() {
 	
 	if (!Settings::volumeMute)					muteButtonCrossSprite.setColor(sf::Color::Transparent);
 	else										muteButtonCrossSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstAdd"])	questionButtonAddSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::add])	questionButtonAddSprite.setColor(sf::Color::Transparent);
 	else										questionButtonAddSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstSub"])	questionButtonSubtractSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::sub])	questionButtonSubtractSprite.setColor(sf::Color::Transparent);
 	else										questionButtonSubtractSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstMlt"])	questionButtonMultiplySprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::mlt])	questionButtonMultiplySprite.setColor(sf::Color::Transparent);
 	else										questionButtonMultiplySprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstDvd"])	questionButtonDivideSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::dvd])	questionButtonDivideSprite.setColor(sf::Color::Transparent);
 	else										questionButtonDivideSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstFns"])	questionButtonFunctionsSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::fns])	questionButtonFunctionsSprite.setColor(sf::Color::Transparent);
 	else										questionButtonFunctionsSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstMfr"])	questionButtonMultiplyFractionSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::mfr])	questionButtonMultiplyFractionSprite.setColor(sf::Color::Transparent);
 	else										questionButtonMultiplyFractionSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstQdr"])	questionButtonQuadraticSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::qdr])	questionButtonQuadraticSprite.setColor(sf::Color::Transparent);
 	else										questionButtonQuadraticSprite.setColor(sf::Color::Black);
-	if (!Settings::questionSettings["qstSim"])	questionButtonSimultaneousSprite.setColor(sf::Color::Transparent);
+	if (!Settings::questionSettings[questionTypes::sim])	questionButtonSimultaneousSprite.setColor(sf::Color::Transparent);
 	else										questionButtonSimultaneousSprite.setColor(sf::Color::Black);
 
 
