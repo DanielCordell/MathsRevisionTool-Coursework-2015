@@ -18,16 +18,22 @@ private:
 	questionGenerator questionGen;
 	std::pair<std::string, std::string> questionStore;
 	bool questionAnswered;
-	bool questionCorrect;
+	bool gameOver;
 	int scoreCount;
 	int livesCount;
+
+	sf::Texture heartEmptyTexture;
+	sf::Texture heartFullTexture;
+
+	std::vector<sf::Sprite> hearts;
+
 public:
 	int Run(sf::RenderWindow &window);
 	bool Init();
+	void startGame();
+	void endGame(int finalScore, int livesRemaining, sf::Time timeTaken);
 	int Events(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);;
 	void Update();
 	void GenerateQuestion();
-
-	~screen2();
 };

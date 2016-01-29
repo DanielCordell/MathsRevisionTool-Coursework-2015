@@ -15,31 +15,22 @@ std::pair<std::string, std::string> questionGenerator::chooseQuestion() {
 
 	switch (questionType) {
 	case questionTypes::add:
-		std::cout << "add\n";
 		return generateAdd();
 	case questionTypes::sub:
-		std::cout << "sub\n";
 		return generateSubtract();
 	case questionTypes::mlt:
-		std::cout << "mlt\n";
 		return generateMultiply();
 	case questionTypes::dvd:
-		std::cout << "dvd\n";
 		return generateDivide();
 	case questionTypes::fns:
-		std::cout << "fns\n";
 		return generateFunctions();
 	case questionTypes::mfr:
-		std::cout << "mfr\n";
 		return generateMultiplyFraction();
 	case questionTypes::qdr:
-		std::cout << "qdr\n";
 		return generateQuadratic();
 	case questionTypes::sim:
-		std::cout << "sim\n";
 		return generateSimultaneous();
 	default:
-		std::cout << "help\n";
 		break;
 	return generateAdd();
 	}

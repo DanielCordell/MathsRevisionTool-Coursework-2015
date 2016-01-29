@@ -37,5 +37,5 @@ enum screen {
 	screenOptions,
 	screenGame,
 	screenHelp,
-	screenIngameMenu
+	screenScore
 };

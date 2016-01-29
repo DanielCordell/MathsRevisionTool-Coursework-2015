@@ -1,10 +1,11 @@
-#include "Headers/Screen3.h"
+#include "Headers/screen4.h"
 #include "Headers/Constants.h"
+#include "Headers/Score.h"
 #include <iostream>
 
-//Help Screen
+//Score Screen
 
-bool screen3::Init() {
+bool screen4::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
 		|| !backgroundTexture.loadFromFile("Resources/backgroundHelp.png")) {
@@ -14,12 +15,13 @@ bool screen3::Init() {
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
-
-
 	//Initializing Text Values
-	screenTitle = sf::Text("Help Screen", font, 80);
-	buttonBackToMenu = sf::Text("Done", font, 60);
-
+	screenTitle = sf::Text("Score", font, 80);
+	buttonBackToMenu = sf::Text("Return", font, 60);
+	timeTakenText = sf::Text("", font, 40);
+	finalScoreText = sf::Text("", font, 40);
+	livesLeftText = sf::Text("", font, 40);
+	
 	//Positioning Text
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
@@ -32,10 +34,13 @@ bool screen3::Init() {
 	buttonBackToMenu.setPosition(150, WINDOW_Y - 100);
 	buttonBackToMenu.setColor(sf::Color::White);
 
+	timeTakenText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 7 * WINDOW_Y / 16.0f));
+	finalScoreText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 8 * WINDOW_Y / 16.0f));
+	livesLeftText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 9 * WINDOW_Y / 16.0f));
 	return true;
 }
 
-int screen3::Events(sf::RenderWindow & window)
+int screen4::Events(sf::RenderWindow & window)
 {
 	sf::Event event;
 	while (window.pollEvent(event)) {
@@ -54,23 +59,34 @@ int screen3::Events(sf::RenderWindow & window)
 }
 
 
-void screen3::Draw(sf::RenderWindow & window)
+void screen4::Draw(sf::RenderWindow & window)
 {
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
 	window.draw(buttonBackToMenu);
+
+	window.draw(timeTakenText);
+	window.draw(finalScoreText);
+	window.draw(livesLeftText);
 	window.display();
 }
 
-void screen3::Update()
+void screen4::Update()
 {
 
 }
 
-int screen3::Run(sf::RenderWindow &window) {
+void screen4::updateValues()
+{
+	finalScoreText.setString("Final Score: " + std::to_string(Score::finalScore));
+	livesLeftText.setString("Lives Left: " + std::to_string(Score::livesRemaining));
+	timeTakenText.setString("Time Taken: " + std::to_string(int(Score::timeTaken.asSeconds())) + "." + std::to_string(int(Score::timeTaken.asSeconds() * 10) - int(Score::timeTaken.asSeconds())) + " Seconds");
+}
+
+int screen4::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	bool doQuit = false;
+	updateValues();
 
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {

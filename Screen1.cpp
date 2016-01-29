@@ -203,7 +203,7 @@ int screen1::Events(sf::RenderWindow & window) {
 	while (window.pollEvent(event)) {
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
-			return screenQuitGame;
+			return screenMainMenu;
 		}
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {

@@ -1,5 +1,6 @@
 #include "Headers/Screen2.h"
 #include "Headers/Constants.h"
+#include "Headers/Score.h"
 #include <iostream>
 
 //Game Screen
@@ -7,10 +8,12 @@
 bool screen2::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		|| !backgroundTexture.loadFromFile("Resources/backgroundGame.png")){
+		|| !backgroundTexture.loadFromFile("Resources/backgroundGame.png")
+		|| !heartEmptyTexture.loadFromFile("Resources/heartEmpty.png")
+		|| !heartFullTexture.loadFromFile("Resources/heartFull.png")){
 		return false;
 	}	
-		questionAnswered = true;
+		questionAnswered = false;
 
 	//Initialize Background
 	backgroundSprite.setTexture(backgroundTexture);
@@ -48,18 +51,46 @@ bool screen2::Init() {
 	userInputCursorBlink.setSize(sf::Vector2f(WINDOW_X / 196.0f, 2 * userInputBox.getSize().y / 3.0f));
 	userInputCursorBlink.setOrigin(0, userInputCursorBlink.getSize().y / 2.0f);
 	userInputCursorBlink.setPosition(userInputText.getPosition().x, userInputText.getPosition().y);
+
+	//Initializing Hearts/Lives
+	sf::Sprite baseSprite;
+	auto bounds = userInputBox.getGlobalBounds();
+	for (int i = 0; i <= 2; i++) {
+		hearts.push_back(baseSprite);
+		hearts[i].setTexture(heartFullTexture);
+		hearts[i].setOrigin(sf::Vector2f(heartFullTexture.getSize()));
+		hearts[i].setPosition(sf::Vector2f((bounds.width + bounds.left) - heartFullTexture.getSize().x * (2-i), 6 * WINDOW_Y / 8.0f));
+	}
+
 	return true;
+}
+
+void screen2::startGame() {
+	livesCount = 3;
+	scoreCount = 0;
+	gameOver = false;
+	gameClock.restart();
+
+	for (int i = 0; i < 3; i++) {
+		hearts[i].setTexture(heartFullTexture);
+	}
+	GenerateQuestion();
 }
 
 int screen2::Events(sf::RenderWindow & window)
 {
+	if (gameOver) {
+		endGame(scoreCount, livesCount, gameClock.getElapsedTime());
+		return screenScore;
+	}
 	// Polling window events
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		//If the game should quit
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
-			return screenQuitGame;
+			endGame(scoreCount, livesCount, gameClock.restart());
+			return screenScore;
 		}
 		// If the mouse button is pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
@@ -125,6 +156,9 @@ void screen2::Draw(sf::RenderWindow & window)
 	window.draw(userInputText);
 	window.draw(userInputValidText);
 	window.draw(userInputCursorBlink);
+
+	for (auto heart : hearts) window.draw(heart);
+
 	window.display();
 }
 
@@ -154,16 +188,21 @@ void screen2::Update()
 		else {
 			livesCount--;
 			if (livesCount == 0) {
-				//gameOver();
+				endGame(scoreCount, livesCount, gameClock.getElapsedTime());
 			}
 		}
 		GenerateQuestion();
+	}
+
+	for (int i = 2 - livesCount; i >= 0; i--) {
+		hearts[i].setTexture(heartEmptyTexture);
 	}
 }
 
 int screen2::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
 	bool doQuit = false;
+	startGame();
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
@@ -180,5 +219,12 @@ void screen2::GenerateQuestion() {
 	questionStore = questionGen.chooseQuestion();
 	screenTitle.setString(questionStore.first);
 	questionAnswered = false;
-	std::cout << questionStore.second << "\n";
 }
+
+void screen2::endGame(int finalScore, int livesRemaining, sf::Time timeTaken) {
+	Score::finalScore = finalScore;
+	Score::livesRemaining = livesRemaining;
+	Score::timeTaken = timeTaken;
+	gameOver = true;
+}; 
+
