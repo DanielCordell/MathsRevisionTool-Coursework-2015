@@ -4,7 +4,7 @@ volMut:0
 // Question Settings // 
 qstAdd:1
 qstSub:1
-qstMlt:1
+qstMlt:0
 qstDvd:1
 qstMfr:1
 qstFns:1
