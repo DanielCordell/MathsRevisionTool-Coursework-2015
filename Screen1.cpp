@@ -205,6 +205,7 @@ int screen1::Events(sf::RenderWindow & window) {
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenMainMenu;
 		}
+		// If Mouse Pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
@@ -247,8 +248,9 @@ int screen1::Events(sf::RenderWindow & window) {
 				}
 			}
 		}
+		// If Mouse Moved
 		else if (event.type == sf::Event::MouseMoved) {
-			sf::Vector2f mousePos(float(event.mouseMove.x), float(event.mouseMove.y));
+			sf::Vector2i mousePos(float(event.mouseMove.x), float(event.mouseMove.y));
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canVolumeMove == true) {
 				int mousePosLimited = int(mousePos.x);
 				if (mousePosLimited > volumeSliderBack.getBounds().left + volumeSliderBack.getBounds().width) {
@@ -265,6 +267,17 @@ int screen1::Events(sf::RenderWindow & window) {
 					Settings::volumeMute = false;
 				}
 			}
+			buttonHighlightDetect(mousePos, buttonBackToMenu);
+			buttonHighlightDetect(mousePos, muteButtonBack);
+			buttonHighlightDetect(mousePos, questionButtonAddBack);
+			buttonHighlightDetect(mousePos, questionButtonDivideBack);
+			buttonHighlightDetect(mousePos, questionButtonFunctionsBack);
+			buttonHighlightDetect(mousePos, questionButtonMultiplyFractionBack);
+			buttonHighlightDetect(mousePos, questionButtonMultiplyBack);
+			buttonHighlightDetect(mousePos, questionButtonQuadraticBack);
+			buttonHighlightDetect(mousePos, questionButtonSimultaneousBack);
+			buttonHighlightDetect(mousePos, questionButtonSubtractBack);
+			buttonHighlightDetect(mousePos, volumeSlider);
 		}
 		else if (event.type == sf::Event::MouseButtonReleased) canVolumeMove = false;
 	}
@@ -272,6 +285,14 @@ int screen1::Events(sf::RenderWindow & window) {
 }
 
 void screen1::Update() {
+
+	if (canVolumeMove) {
+		volumeSlider.setFillColor(sf::Color(200, 200, 200));
+	}
+	else {
+		volumeSlider.setFillColor(sf::Color::White);
+	}
+
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
 	volumeSlider.setPosition(volSldBackRect.left + volSldBackRect.width * (Settings::volumePercent / 100.0f), volumeSlider.getPosition().y);
 	volumeSlider.setScale(1, Settings::volumePercent / 150.0f + 1 / 3.0f);
@@ -294,11 +315,6 @@ void screen1::Update() {
 	else										questionButtonQuadraticSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::sim])	questionButtonSimultaneousSprite.setColor(sf::Color::Transparent);
 	else										questionButtonSimultaneousSprite.setColor(sf::Color::Black);
-
-
-
-
-
 }
 void screen1::Draw(sf::RenderWindow & window) {
 	window.clear();

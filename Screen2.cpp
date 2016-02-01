@@ -21,7 +21,7 @@ bool screen2::Init() {
 
 	//Initializing Text Values
 	screenTitle = sf::Text("", font, 40);
-	buttonBackToMenu = sf::Text("Done", font, 60);
+	buttonBackToMenu = sf::Text("Quit", font, 60);
 	userInputText = sf::Text("", font, 40);
 	userInputValidText = sf::Text("", font, 20);
 
@@ -135,10 +135,16 @@ int screen2::Events(sf::RenderWindow & window)
 				userInputValidText.setColor(sf::Color::Transparent);
 			}
 		}
-		if (event.type == sf::Event::KeyPressed) {
+		//If Enter key is pressed
+		else if (event.type == sf::Event::KeyPressed) {
 			if (event.key.code == sf::Keyboard::Return) {
 				questionAnswered = true;
 			}
+		}
+		//If mouse is moved
+		if (event.type == sf::Event::MouseMoved) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			buttonHighlightDetect(mousePos, buttonBackToMenu);
 		}
 	}
 	return getCurrentScreen();

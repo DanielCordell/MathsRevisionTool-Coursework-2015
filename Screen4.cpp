@@ -44,15 +44,22 @@ int screen4::Events(sf::RenderWindow & window)
 {
 	sf::Event event;
 	while (window.pollEvent(event)) {
+		// If escape button pressed
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
-			return screenMainMenu;
+			return screenQuitGame;
 		}
+		// If mouse button pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
 				if (buttonBackToMenu.getGlobalBounds().contains(mousePos)) return 0;
 			}
+		}
+		//If mouse is moved
+		if (event.type == sf::Event::MouseMoved) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			buttonHighlightDetect(mousePos, buttonBackToMenu);
 		}
 	}
 	return getCurrentScreen();
@@ -74,19 +81,14 @@ void screen4::Draw(sf::RenderWindow & window)
 
 void screen4::Update()
 {
-
-}
-
-void screen4::updateValues()
-{
 	finalScoreText.setString("Final Score: " + std::to_string(Score::finalScore));
 	livesLeftText.setString("Lives Left: " + std::to_string(Score::livesRemaining));
-	timeTakenText.setString("Time Taken: " + std::to_string(int(Score::timeTaken.asSeconds())) + "." + std::to_string(int(Score::timeTaken.asSeconds() * 10) - int(Score::timeTaken.asSeconds())) + " Seconds");
+	auto timeTaken = Score::timeTaken.asSeconds();
+	timeTakenText.setString("Time Taken: " + (timeTaken < 10 ? std::to_string(Score::timeTaken.asSeconds()).substr(0, 4) : std::to_string(Score::timeTaken.asSeconds()).substr(0, 5)));
 }
 
 int screen4::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	updateValues();
 
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {

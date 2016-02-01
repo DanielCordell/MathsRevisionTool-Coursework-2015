@@ -40,14 +40,21 @@ int screen3::Events(sf::RenderWindow & window)
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
+		// If escape button pressed
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenMainMenu;
 		}
+		// If mouse button pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
 				if (buttonBackToMenu.getGlobalBounds().contains(mousePos)) return 0;
 			}
+		}
+		//If mouse is moved
+		if (event.type == sf::Event::MouseMoved) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			buttonHighlightDetect(mousePos, buttonBackToMenu);
 		}
 	}
 	return getCurrentScreen();

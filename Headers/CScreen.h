@@ -25,6 +25,10 @@ public:
 	// Drawing the game to the screen
 	virtual void Draw(sf::RenderWindow &window) = 0;
 
+	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::Text &button);
+	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::Sprite &button);
+	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::RectangleShape &button);
+
 	inline void setCurrentScreen(const int _currentScreen) { currentScreen = _currentScreen; }
 	inline const int& getCurrentScreen() { return currentScreen; }
 };

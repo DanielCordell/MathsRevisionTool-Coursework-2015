@@ -75,6 +75,7 @@ int screen0::Events(sf::RenderWindow &window) {
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenQuitGame;
 		}
+		// If mouse button pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
@@ -83,6 +84,14 @@ int screen0::Events(sf::RenderWindow &window) {
 				if (buttonOptions.getGlobalBounds().contains(mousePos)) return screenOptions; // If options button clicked
 				if (buttonQuit.getGlobalBounds().contains(mousePos)) return screenQuitGame; // If quit button clicked
 			}
+		}
+		//If mouse is moved
+		if (event.type == sf::Event::MouseMoved) {
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			buttonHighlightDetect(mousePos, buttonStart);
+			buttonHighlightDetect(mousePos, buttonHelp);
+			buttonHighlightDetect(mousePos, buttonOptions);
+			buttonHighlightDetect(mousePos, buttonQuit);
 		}
 	}
 	return getCurrentScreen();

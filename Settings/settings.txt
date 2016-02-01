@@ -1,6 +1,6 @@
 // Volume Settings // 
-volPer:0
-volMut:1
+volPer:100
+volMut:0
 // Question Settings // 
 qstAdd:1
 qstSub:1

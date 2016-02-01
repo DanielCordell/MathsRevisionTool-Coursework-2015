@@ -14,11 +14,9 @@ private:
 	sf::Font font;
 
 public:
-	void updateValues();
 	int Run(sf::RenderWindow &window);
 	bool Init();
 	int Events(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);;
 	void Update();
-
 };
