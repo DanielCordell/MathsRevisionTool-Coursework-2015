@@ -18,28 +18,30 @@ bool screen1::Init() {
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getLocalBounds().width, WINDOW_Y / backgroundSprite.getLocalBounds().height);
 
-	translucentBackdrop.setSize(sf::Vector2f(14 * WINDOW_X / 16.0f, 20 * WINDOW_Y / 32.0f));
-	translucentBackdrop.setFillColor(sf::Color(255, 255, 255, 100));
-	sf::FloatRect backdropRect = translucentBackdrop.getLocalBounds();
-	translucentBackdrop.setOrigin(backdropRect.width / 2.0f, 9 * backdropRect.height / 16.0f);
-	translucentBackdrop.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 2.0f);
-	translucentBackdrop.setOutlineColor(sf::Color::Cyan);
-	translucentBackdrop.setOutlineThickness(2);
-
 	//Initializing Text Values
 	screenTitle = sf::Text("Settings Screen", font, 50);
 	screenTitleVolume = sf::Text("Volume Options", font, 40);
 	screenTitleQuestions = sf::Text("Enable / Disable Questions", font, 40);
 	volumeText = sf::Text("Volume", font, 28);
+	volumeText.setColor(sf::Color::Black);
 	muteText = sf::Text("Mute", font, 28);
+	muteText.setColor(sf::Color::Black);
 	questionTextAdd = sf::Text("Addition", font, 28);
+	questionTextAdd.setColor(sf::Color::Black);
 	questionTextSubtract = sf::Text("Subtraction", font, 28);
+	questionTextSubtract.setColor(sf::Color::Black);
 	questionTextMultiply = sf::Text("Multiplication", font, 28);
+	questionTextMultiply.setColor(sf::Color::Black);
 	questionTextDivide = sf::Text("Division", font, 28);
+	questionTextDivide.setColor(sf::Color::Black);
 	questionTextMultiplyFraction = sf::Text("   Fraction\nMultiplication", font, 28);
+	questionTextMultiplyFraction.setColor(sf::Color::Black);
 	questionTextQuadratic = sf::Text("Quadratics", font, 28);
+	questionTextQuadratic.setColor(sf::Color::Black);
 	questionTextSimultaneous = sf::Text("Simultaneous\n  Equations", font, 28);
+	questionTextSimultaneous.setColor(sf::Color::Black);
 	questionTextFunctions = sf::Text("Functions", font, 28);
+	questionTextFunctions.setColor(sf::Color::Black);
 
 	//Initializing Volume Slider
 	volumeSliderBack = sf::VertexArray(sf::Quads, 4);
@@ -176,24 +178,22 @@ bool screen1::Init() {
 	sf::FloatRect textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.width / 2, textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 16.0f);
-	screenTitle.setColor(sf::Color::White);
+	screenTitle.setColor(sf::Color::Black);
 
 	textRect = screenTitleVolume.getLocalBounds();
 	screenTitleVolume.setOrigin(textRect.width / 2, textRect.height / 2);
 	screenTitleVolume.setPosition(WINDOW_X / 2.0f, 3 * WINDOW_Y / 16.0f);
-	screenTitleVolume.setColor(sf::Color::White);
+	screenTitleVolume.setColor(sf::Color::Black);
 
 	textRect = screenTitleQuestions.getLocalBounds();
 	screenTitleQuestions.setOrigin(textRect.width / 2, textRect.height / 2);
 	screenTitleQuestions.setPosition(WINDOW_X / 2.0f, 6 * WINDOW_Y / 16.0f);
-	screenTitleQuestions.setColor(sf::Color::White);
+	screenTitleQuestions.setColor(sf::Color::Black);
 
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.sprite.setColor(sf::Color::White);
-
 
 	//Misc
 	canVolumeMove = false;
@@ -289,10 +289,10 @@ int screen1::Events(sf::RenderWindow & window) {
 void screen1::Update() {
 
 	if (canVolumeMove) {
-		volumeSlider.setFillColor(sf::Color(200, 200, 200));
+		volumeSlider.setFillColor(sf::Color(100, 100, 100));
 	}
 	else {
-		volumeSlider.setFillColor(sf::Color::White);
+		volumeSlider.setFillColor(sf::Color::Black);
 	}
 
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
@@ -321,7 +321,6 @@ void screen1::Update() {
 void screen1::Draw(sf::RenderWindow & window) {
 	window.clear();
 	window.draw(backgroundSprite);
-	window.draw(translucentBackdrop);
 	window.draw(screenTitle);
 	window.draw(buttonBackToMenu.sprite);
 

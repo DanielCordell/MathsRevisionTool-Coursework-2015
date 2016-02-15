@@ -33,23 +33,22 @@ bool screen2::Init() {
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
 	screenTitle.setPosition(WINDOW_X / 32.0f, WINDOW_Y / 24.0f);
-	screenTitle.setColor(sf::Color::White);
+	screenTitle.setColor(sf::Color::Black);
 
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.sprite.setColor(sf::Color::White);
 
 	timerText.setPosition(23 * WINDOW_X / 32.0f, 10 * WINDOW_Y / 32.0f);
-
+	timerText.setColor(sf::Color::Black);
 
 	//Initializing Answer Box
 	userInputBox.setSize(sf::Vector2f(10 * WINDOW_X / 32.0f, WINDOW_Y / 16.0f));
 	userInputBox.setOrigin(userInputBox.getLocalBounds().width / 2, userInputBox.getLocalBounds().height / 2);
 	userInputBox.setPosition(sf::Vector2f(13 * WINDOW_X / 16.0f, buttonBackToMenu.sprite.getPosition().y));
 	userInputBox.setFillColor(sf::Color::Black);
-	userInputBox.setOutlineColor(sf::Color::Green);
+	userInputBox.setOutlineColor(sf::Color::White);
 	userInputBox.setOutlineThickness(2);
 	userInputText.setOrigin(0, userInputText.getLocalBounds().height / 2.0f);
 	userInputText.setPosition(userInputBox.getGlobalBounds().left*1.01f,userInputBox.getPosition().y - userInputBox.getLocalBounds().height / 2);
@@ -73,7 +72,10 @@ bool screen2::Init() {
 
 	//Initializing Score Text
 	scoreText.setPosition(WINDOW_X / 32.0f, 14 * WINDOW_Y / 32.0f);
+	scoreText.setColor(sf::Color::Black);
 	highScoreText.setPosition(WINDOW_X / 32.0f, 17 * WINDOW_Y / 32.0f);
+	highScoreText.setColor(sf::Color::Black);
+
 	return true;
 }
 
@@ -133,12 +135,12 @@ int screen2::Events(sf::RenderWindow & window)
 				}
 				else {
 					userInputValidText.setString("16 characters maximum.");
-					userInputValidText.setColor(sf::Color::White);
+					userInputValidText.setColor(sf::Color::Black);
 				}
 			}
 			else {
 				userInputValidText.setString("Please enter a valid character:\n(0 - 9, '/', and '-')");
-				userInputValidText.setColor(sf::Color::White);
+				userInputValidText.setColor(sf::Color::Black);
 			}
 			
 			// Detect if entered text is a backspace

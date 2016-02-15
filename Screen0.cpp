@@ -31,27 +31,23 @@ bool screen0::Init() {
 	textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 16.0f);
-	screenTitle.setColor(sf::Color::White);
+	screenTitle.setColor(sf::Color::Black);
 
 	textRect = buttonStart.sprite.getLocalBounds();
 	buttonStart.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonStart.sprite.setPosition(WINDOW_X / 8, WINDOW_Y / 2);
-	buttonStart.sprite.setColor(sf::Color::White);
 
 	textRect = buttonHelp.sprite.getLocalBounds();
 	buttonHelp.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonHelp.sprite.setPosition(WINDOW_X - WINDOW_X/8, WINDOW_Y / 2);
-	buttonHelp.sprite.setColor(sf::Color::White);
 
 	textRect = buttonOptions.sprite.getLocalBounds();
 	buttonOptions.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonOptions.sprite.setPosition(WINDOW_X / 8, 5 * WINDOW_Y / 6);
-	buttonOptions.sprite.setColor(sf::Color::White);
 
 	textRect = buttonQuit.sprite.getLocalBounds();
 	buttonQuit.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonQuit.sprite.setPosition(WINDOW_X - WINDOW_X / 8, 5 * WINDOW_Y / 6);
-	buttonQuit.sprite.setColor(sf::Color::White);
 	return true;
 };
 

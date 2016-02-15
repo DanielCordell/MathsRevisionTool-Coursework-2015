@@ -27,13 +27,12 @@ bool screen4::Init() {
 	textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2, 80);
-	screenTitle.setColor(sf::Color::White);
+	screenTitle.setColor(sf::Color::Black);
 
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.sprite.setColor(sf::Color::White);
 
 	textRect = newHighScoreText.getLocalBounds();
 	newHighScoreText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
@@ -42,6 +41,8 @@ bool screen4::Init() {
 	livesLeftText.setPosition(WINDOW_X / 32.0f, 17 * WINDOW_Y / 32.0f);
 	newHighScoreText.setPosition(sf::Vector2f(3 * WINDOW_X / 4.0f, 9 * WINDOW_Y / 16.0f));
 
+	finalScoreText.setColor(sf::Color::Black);
+	livesLeftText.setColor(sf::Color::Black);
 	return true;
 }
 
@@ -90,7 +91,7 @@ void screen4::Update()
 	livesLeftText.setString("Lives Left:   " + std::to_string(Score::livesRemaining));
 
 	if (Score::didBeatHighScore) {
-		newHighScoreText.setColor(sf::Color::White);
+		newHighScoreText.setColor(sf::Color::Black);
 	}
 	else {
 		newHighScoreText.setColor(sf::Color::Transparent);

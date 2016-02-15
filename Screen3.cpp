@@ -23,7 +23,7 @@ bool screen3::Init() {
 
 	std::stringstream buffer;
 	buffer << "This game will have you answering as many maths\n";
-	buffer << "questions aspossible in five minutes. See if\n";
+	buffer << "questions as possible in five minutes. See if\n";
 	buffer << "you can beat your high score!\n\n\n";
 	buffer << "You will need a calculator, and optionally a pen\n";
 	buffer << "and some paper to be able to asnwer some of these\n";
@@ -36,17 +36,17 @@ bool screen3::Init() {
 	textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2, 80);
-	screenTitle.setColor(sf::Color::White);
+	screenTitle.setColor(sf::Color::Black);
 
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.sprite.setColor(sf::Color::White);
 
 	textRect = helpText.getLocalBounds();
 	helpText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	helpText.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 2.0f);
+	helpText.setColor(sf::Color::Black);
 	return true;
 }
 
