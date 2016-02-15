@@ -8,7 +8,8 @@
 bool screen4::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		|| !backgroundTexture.loadFromFile("Resources/backgroundHelp.png")) {
+		||	!backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
+		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
 	//Initialize Background
@@ -17,11 +18,10 @@ bool screen4::Init() {
 
 	//Initializing Text Values
 	screenTitle = sf::Text("Score", font, 80);
-	buttonBackToMenu = sf::Text("Return", font, 60);
-	timeTakenText = sf::Text("", font, 40);
-	finalScoreText = sf::Text("", font, 40);
-	livesLeftText = sf::Text("", font, 40);
-	
+	finalScoreText = sf::Text("", font, 60);
+	livesLeftText = sf::Text("", font, 60);
+	newHighScoreText = sf::Text("New High\n Score!", font, 80);
+
 	//Positioning Text
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
@@ -29,14 +29,19 @@ bool screen4::Init() {
 	screenTitle.setPosition(WINDOW_X / 2, 80);
 	screenTitle.setColor(sf::Color::White);
 
-	textRect = buttonBackToMenu.getLocalBounds();
-	buttonBackToMenu.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonBackToMenu.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.setColor(sf::Color::White);
+	buttonBackToMenu.InitSprite();
+	textRect = buttonBackToMenu.sprite.getLocalBounds();
+	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
+	buttonBackToMenu.sprite.setColor(sf::Color::White);
 
-	timeTakenText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 7 * WINDOW_Y / 16.0f));
-	finalScoreText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 8 * WINDOW_Y / 16.0f));
-	livesLeftText.setPosition(sf::Vector2f(WINDOW_X / 16.0f, 9 * WINDOW_Y / 16.0f));
+	textRect = newHighScoreText.getLocalBounds();
+	newHighScoreText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+
+	finalScoreText.setPosition(WINDOW_X / 32.0f, 14 * WINDOW_Y / 32.0f);
+	livesLeftText.setPosition(WINDOW_X / 32.0f, 17 * WINDOW_Y / 32.0f);
+	newHighScoreText.setPosition(sf::Vector2f(3 * WINDOW_X / 4.0f, 9 * WINDOW_Y / 16.0f));
+
 	return true;
 }
 
@@ -53,13 +58,13 @@ int screen4::Events(sf::RenderWindow & window)
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonBackToMenu.getGlobalBounds().contains(mousePos)) return 0;
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
 			}
 		}
 		//If mouse is moved
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-			buttonHighlightDetect(mousePos, buttonBackToMenu);
+			buttonHighlightDetect(mousePos, buttonBackToMenu.sprite);
 		}
 	}
 	return getCurrentScreen();
@@ -71,20 +76,25 @@ void screen4::Draw(sf::RenderWindow & window)
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
-	window.draw(buttonBackToMenu);
+	window.draw(buttonBackToMenu.sprite);
 
-	window.draw(timeTakenText);
 	window.draw(finalScoreText);
 	window.draw(livesLeftText);
+	window.draw(newHighScoreText);
 	window.display();
 }
 
 void screen4::Update()
 {
-	finalScoreText.setString("Final Score: " + std::to_string(Score::finalScore));
-	livesLeftText.setString("Lives Left: " + std::to_string(Score::livesRemaining));
-	auto timeTaken = Score::timeTaken.asSeconds();
-	timeTakenText.setString("Time Taken: " + (timeTaken < 10 ? std::to_string(Score::timeTaken.asSeconds()).substr(0, 4) : std::to_string(Score::timeTaken.asSeconds()).substr(0, 5)));
+	finalScoreText.setString("Final Score:  " + std::to_string(Score::finalScore));
+	livesLeftText.setString("Lives Left:   " + std::to_string(Score::livesRemaining));
+
+	if (Score::didBeatHighScore) {
+		newHighScoreText.setColor(sf::Color::White);
+	}
+	else {
+		newHighScoreText.setColor(sf::Color::Transparent);
+	}
 }
 
 int screen4::Run(sf::RenderWindow &window) {

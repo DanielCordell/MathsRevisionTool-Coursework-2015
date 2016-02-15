@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+int Settings::highScore;
 int Settings::volumePercent;
 bool Settings::volumeMute;
 std::map<questionTypes, bool> Settings::questionSettings;
@@ -28,6 +29,7 @@ Settings::~Settings() {
 	settingsFile << "// Volume Settings // \n";
 	settingsFile << "volPer:" << Settings::volumePercent << "\n";
 	settingsFile << "volMut:" << Settings::volumeMute << "\n";
+	settingsFile << "hghScr:" << Settings::highScore << "\n";
 	settingsFile << "// Question Settings // \n";
 	settingsFile << "qstAdd:" << questionSettings[questionTypes::add] << "\n";
 	settingsFile << "qstSub:" << questionSettings[questionTypes::sub] << "\n";
@@ -46,6 +48,7 @@ void Settings::generateSettingsFile() {
 	settingsFile << "// Volume Settings // \n";
 	settingsFile << "volPer:50\n";
 	settingsFile << "volMut:0\n\n";
+	settingsFile << "hghScr:0";
 	settingsFile << "// Question Settings // \n";
 	settingsFile << "qstAdd:1\n";
 	settingsFile << "qstSub:1\n";
@@ -81,6 +84,9 @@ void Settings::loadSettingsFromFile(std::string settingsLine) {
 		volumeMute = settingValue; 
 	}
 
+	else if (settingName == "hghScr") {
+		highScore = settingValue;
+	}
 	// If the setting describes a question being active or not
 	else if (questionSettings.find(stringToEnum(settingName)) != questionSettings.end()) {
 		questionSettings[stringToEnum(settingName)] = settingValue;

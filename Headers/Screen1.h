@@ -7,7 +7,7 @@
 class screen1 : public cScreen{
 private:
 	sf::Text screenTitle;
-	sf::Text buttonBackToMenu;
+	Button buttonBackToMenu;
 	sf::RectangleShape translucentBackdrop;
 
 	sf::Texture buttonCrossTexture;

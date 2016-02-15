@@ -7,8 +7,9 @@
 bool screen1::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		|| !backgroundTexture.loadFromFile("Resources/backgroundSettings.png") 
-		|| !buttonCrossTexture.loadFromFile("Resources/SettingsCross.png"))
+		||	!backgroundTexture.loadFromFile("Resources/backgroundSettings.png") 
+		||	!buttonCrossTexture.loadFromFile("Resources/SettingsCross.png")
+		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png"))
 	{
 		return false;
 	}
@@ -17,10 +18,10 @@ bool screen1::Init() {
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getLocalBounds().width, WINDOW_Y / backgroundSprite.getLocalBounds().height);
 
-	translucentBackdrop.setSize(sf::Vector2f(14 * WINDOW_X / 16.0f, 11 * WINDOW_Y / 16.0f));
+	translucentBackdrop.setSize(sf::Vector2f(14 * WINDOW_X / 16.0f, 20 * WINDOW_Y / 32.0f));
 	translucentBackdrop.setFillColor(sf::Color(255, 255, 255, 100));
 	sf::FloatRect backdropRect = translucentBackdrop.getLocalBounds();
-	translucentBackdrop.setOrigin(backdropRect.width / 2.0f, backdropRect.height / 2.0f);
+	translucentBackdrop.setOrigin(backdropRect.width / 2.0f, 9 * backdropRect.height / 16.0f);
 	translucentBackdrop.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 2.0f);
 	translucentBackdrop.setOutlineColor(sf::Color::Cyan);
 	translucentBackdrop.setOutlineThickness(2);
@@ -29,17 +30,16 @@ bool screen1::Init() {
 	screenTitle = sf::Text("Settings Screen", font, 50);
 	screenTitleVolume = sf::Text("Volume Options", font, 40);
 	screenTitleQuestions = sf::Text("Enable / Disable Questions", font, 40);
-	buttonBackToMenu = sf::Text("Done", font, 60);
-	volumeText = sf::Text("Volume", font, 30);
-	muteText = sf::Text("Mute", font, 30);
-	questionTextAdd = sf::Text("Addition", font, 30);
-	questionTextSubtract = sf::Text("Subtraction", font, 30);
-	questionTextMultiply = sf::Text("Multiplication", font, 30);
-	questionTextDivide = sf::Text("Division", font, 30);
-	questionTextMultiplyFraction = sf::Text("   Fraction\nMultiplication", font, 30);
-	questionTextQuadratic = sf::Text("Quadratics", font, 30);
-	questionTextSimultaneous = sf::Text("Simultaneous\n  Equations", font, 30);
-	questionTextFunctions = sf::Text("Functions", font, 30);
+	volumeText = sf::Text("Volume", font, 28);
+	muteText = sf::Text("Mute", font, 28);
+	questionTextAdd = sf::Text("Addition", font, 28);
+	questionTextSubtract = sf::Text("Subtraction", font, 28);
+	questionTextMultiply = sf::Text("Multiplication", font, 28);
+	questionTextDivide = sf::Text("Division", font, 28);
+	questionTextMultiplyFraction = sf::Text("   Fraction\nMultiplication", font, 28);
+	questionTextQuadratic = sf::Text("Quadratics", font, 28);
+	questionTextSimultaneous = sf::Text("Simultaneous\n  Equations", font, 28);
+	questionTextFunctions = sf::Text("Functions", font, 28);
 
 	//Initializing Volume Slider
 	volumeSliderBack = sf::VertexArray(sf::Quads, 4);
@@ -188,10 +188,12 @@ bool screen1::Init() {
 	screenTitleQuestions.setPosition(WINDOW_X / 2.0f, 6 * WINDOW_Y / 16.0f);
 	screenTitleQuestions.setColor(sf::Color::White);
 
-	textRect = buttonBackToMenu.getLocalBounds();
-	buttonBackToMenu.setOrigin(textRect.width / 2, textRect.height / 2);
-	buttonBackToMenu.setPosition(150.0f, WINDOW_Y - 100.0f);
-	buttonBackToMenu.setColor(sf::Color::White);
+	buttonBackToMenu.InitSprite();
+	textRect = buttonBackToMenu.sprite.getLocalBounds();
+	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
+	buttonBackToMenu.sprite.setColor(sf::Color::White);
+
 
 	//Misc
 	canVolumeMove = false;
@@ -210,7 +212,7 @@ int screen1::Events(sf::RenderWindow & window) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
 				
-				if (buttonBackToMenu.getGlobalBounds().contains(mousePos)) return 0;
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
 				else if (volumeSliderBack.getBounds().contains(mousePos)) {
 					canVolumeMove = true;
 					Settings::volumePercent = int((mousePos.x-volumeSliderBack[0].position.x) * 100/volumeSliderBack.getBounds().width);
@@ -250,7 +252,7 @@ int screen1::Events(sf::RenderWindow & window) {
 		}
 		// If Mouse Moved
 		else if (event.type == sf::Event::MouseMoved) {
-			sf::Vector2i mousePos(float(event.mouseMove.x), float(event.mouseMove.y));
+			sf::Vector2i mousePos(event.mouseMove.x, event.mouseMove.y);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canVolumeMove == true) {
 				int mousePosLimited = int(mousePos.x);
 				if (mousePosLimited > volumeSliderBack.getBounds().left + volumeSliderBack.getBounds().width) {
@@ -267,7 +269,7 @@ int screen1::Events(sf::RenderWindow & window) {
 					Settings::volumeMute = false;
 				}
 			}
-			buttonHighlightDetect(mousePos, buttonBackToMenu);
+			buttonHighlightDetect(mousePos, buttonBackToMenu.sprite);
 			buttonHighlightDetect(mousePos, muteButtonBack);
 			buttonHighlightDetect(mousePos, questionButtonAddBack);
 			buttonHighlightDetect(mousePos, questionButtonDivideBack);
@@ -321,7 +323,7 @@ void screen1::Draw(sf::RenderWindow & window) {
 	window.draw(backgroundSprite);
 	window.draw(translucentBackdrop);
 	window.draw(screenTitle);
-	window.draw(buttonBackToMenu);
+	window.draw(buttonBackToMenu.sprite);
 
 	window.draw(screenTitleVolume);
 	window.draw(volumeSliderBack);

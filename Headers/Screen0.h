@@ -5,10 +5,11 @@
 class screen0 : public cScreen {
 private:
 	sf::Text screenTitle;
-	sf::Text buttonStart;
-	sf::Text buttonHelp;
-	sf::Text buttonOptions;
-	sf::Text buttonQuit;
+
+	Button buttonStart;
+	Button buttonHelp;
+	Button buttonOptions;
+	Button buttonQuit;
 	sf::Font font;
 
 public:

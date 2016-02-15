@@ -32,13 +32,13 @@ std::pair<std::string, std::string> questionGenerator::chooseQuestion() {
 		return generateSimultaneous();
 	default:
 		break;
-	return generateAdd();
 	}
+	return generateAdd();
 }
 
 std::pair<std::string, std::string> questionGenerator::generateQuadratic() {
-	int solution1 = getRand(1, 15) * getPlMn();
-	int solution2 = getRand(1, 15) * getPlMn();
+	int solution1 = getRand(1, 10) * getPlMn();
+	int solution2 = getRand(1, 10) * getPlMn();
 
 	int factorValue1 = -solution1;
 	int factorValue2 = -solution2;
@@ -134,7 +134,7 @@ std::pair<std::string, std::string> questionGenerator::generateMultiplyFraction(
 	return std::make_pair(questionText, answerText);
 }
 std::pair<std::string, std::string> questionGenerator::generateFunctions() {
-	int coeffx = getRand(2, 40) * getPlMn();
+	int coeffx = getRand(2, 20) * getPlMn();
 	int valuex = getRand(2, 20) * getPlMn();
 	int valuec = getRand(5, 40) * getPlMn();
 

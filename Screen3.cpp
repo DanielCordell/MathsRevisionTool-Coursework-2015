@@ -1,13 +1,14 @@
 #include "Headers/Screen3.h"
 #include "Headers/Constants.h"
 #include <iostream>
-
+#include <sstream>
 //Help Screen
 
 bool screen3::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		|| !backgroundTexture.loadFromFile("Resources/backgroundHelp.png")) {
+		||	!backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
+		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
 	//Initialize Background
@@ -17,8 +18,18 @@ bool screen3::Init() {
 
 
 	//Initializing Text Values
-	screenTitle = sf::Text("Help Screen", font, 80);
-	buttonBackToMenu = sf::Text("Done", font, 60);
+	screenTitle = sf::Text("Welcome to Number Wizard", font, 50);
+	helpText = sf::Text("", font, 40);
+
+	std::stringstream buffer;
+	buffer << "This game will have you answering as many maths\n";
+	buffer << "questions aspossible in five minutes. See if\n";
+	buffer << "you can beat your high score!\n\n\n";
+	buffer << "You will need a calculator, and optionally a pen\n";
+	buffer << "and some paper to be able to asnwer some of these\n";
+	buffer << "questions. All questions are randomly generated.";
+
+	helpText.setString(buffer.str());
 
 	//Positioning Text
 	sf::FloatRect textRect;
@@ -27,11 +38,15 @@ bool screen3::Init() {
 	screenTitle.setPosition(WINDOW_X / 2, 80);
 	screenTitle.setColor(sf::Color::White);
 
-	textRect = buttonBackToMenu.getLocalBounds();
-	buttonBackToMenu.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonBackToMenu.setPosition(150, WINDOW_Y - 100);
-	buttonBackToMenu.setColor(sf::Color::White);
+	buttonBackToMenu.InitSprite();
+	textRect = buttonBackToMenu.sprite.getLocalBounds();
+	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
+	buttonBackToMenu.sprite.setColor(sf::Color::White);
 
+	textRect = helpText.getLocalBounds();
+	helpText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	helpText.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 2.0f);
 	return true;
 }
 
@@ -48,13 +63,13 @@ int screen3::Events(sf::RenderWindow & window)
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonBackToMenu.getGlobalBounds().contains(mousePos)) return 0;
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
 			}
 		}
 		//If mouse is moved
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-			buttonHighlightDetect(mousePos, buttonBackToMenu);
+			buttonHighlightDetect(mousePos, buttonBackToMenu.sprite);
 		}
 	}
 	return getCurrentScreen();
@@ -66,7 +81,8 @@ void screen3::Draw(sf::RenderWindow & window)
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
-	window.draw(buttonBackToMenu);
+	window.draw(helpText);
+	window.draw(buttonBackToMenu.sprite);
 	window.display();
 }
 

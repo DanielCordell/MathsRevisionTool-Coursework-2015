@@ -1,10 +1,11 @@
 // Volume Settings // 
-volPer:100
+volPer:50
 volMut:0
+hghScr:0
 // Question Settings // 
 qstAdd:1
 qstSub:1
-qstMlt:0
+qstMlt:1
 qstDvd:1
 qstMfr:1
 qstFns:1

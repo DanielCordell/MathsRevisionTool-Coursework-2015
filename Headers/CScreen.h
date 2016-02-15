@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Button.h"
 
 // Base class for all screen classes
 class cScreen {

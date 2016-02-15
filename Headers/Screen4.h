@@ -5,12 +5,11 @@
 class screen4 : public cScreen{
 private:
 	sf::Text screenTitle;
-	sf::Text buttonBackToMenu;
+	Button buttonBackToMenu;
 
 	sf::Text finalScoreText;
-	sf::Text timeTakenText;
 	sf::Text livesLeftText;
-
+	sf::Text newHighScoreText;
 	sf::Font font;
 
 public:

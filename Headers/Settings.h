@@ -22,6 +22,7 @@ public:
 	static std::map<questionTypes, bool> questionSettings;
 	static bool volumeMute;
 	static int volumePercent;
+	static int highScore;
 	void initSettings();
 	void loadSettingsFromFile(std::string);
 	void generateSettingsFile();

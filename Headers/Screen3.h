@@ -5,7 +5,9 @@
 class screen3 : public cScreen{
 private:
 	sf::Text screenTitle;
-	sf::Text buttonBackToMenu;
+	Button buttonBackToMenu;
+	sf::Text buttonBackToMenu_;
+	sf::Text helpText;
 
 	sf::Font font;
 

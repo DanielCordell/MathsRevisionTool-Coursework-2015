@@ -7,7 +7,11 @@
 bool screen0::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-	||  !backgroundTexture.loadFromFile("Resources/backgroundMenu.png")){
+	||  !backgroundTexture.loadFromFile("Resources/backgroundMenu.png")
+	||  !buttonStart.loadTexture("Resources/buttonStart.png")
+	||	!buttonHelp.loadTexture("Resources/buttonHelp.png")
+	||	!buttonOptions.loadTexture("Resources/buttonOptions.png")
+	||	!buttonQuit.loadTexture("Resources/buttonQuit.png")){
 		return false;
 	}
 
@@ -16,38 +20,38 @@ bool screen0::Init() {
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
 	//Initializing Text Values
-	screenTitle = sf::Text("Maths Game", font, 100);
-	buttonStart = sf::Text("Start", font, 80);
-	buttonHelp = sf::Text("Help", font, 80);
-	buttonOptions = sf::Text("Options", font, 80);
-	buttonQuit = sf::Text("Quit", font, 80);
-	
+	screenTitle = sf::Text("Number Wizard", font, 100);
+	buttonStart.sprite.setTexture(buttonStart.texture);
+	buttonHelp.sprite.setTexture(buttonHelp.texture);
+	buttonQuit.sprite.setTexture(buttonQuit.texture);
+	buttonOptions.sprite.setTexture(buttonOptions.texture);
+
 	//Positioning Text
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	screenTitle.setPosition(WINDOW_X/2, 80);
+	screenTitle.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 16.0f);
 	screenTitle.setColor(sf::Color::White);
 
-	textRect = buttonStart.getLocalBounds();
-	buttonStart.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonStart.setPosition(WINDOW_X / 8, WINDOW_Y / 2);
-	buttonStart.setColor(sf::Color::White);
+	textRect = buttonStart.sprite.getLocalBounds();
+	buttonStart.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonStart.sprite.setPosition(WINDOW_X / 8, WINDOW_Y / 2);
+	buttonStart.sprite.setColor(sf::Color::White);
 
-	textRect = buttonHelp.getLocalBounds();
-	buttonHelp.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonHelp.setPosition(WINDOW_X - WINDOW_X/8, WINDOW_Y / 2);
-	buttonHelp.setColor(sf::Color::White);
+	textRect = buttonHelp.sprite.getLocalBounds();
+	buttonHelp.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonHelp.sprite.setPosition(WINDOW_X - WINDOW_X/8, WINDOW_Y / 2);
+	buttonHelp.sprite.setColor(sf::Color::White);
 
-	textRect = buttonOptions.getLocalBounds();
-	buttonOptions.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonOptions.setPosition(WINDOW_X / 8, 5 * WINDOW_Y / 6);
-	buttonOptions.setColor(sf::Color::White);
+	textRect = buttonOptions.sprite.getLocalBounds();
+	buttonOptions.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonOptions.sprite.setPosition(WINDOW_X / 8, 5 * WINDOW_Y / 6);
+	buttonOptions.sprite.setColor(sf::Color::White);
 
-	textRect = buttonQuit.getLocalBounds();
-	buttonQuit.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonQuit.setPosition(WINDOW_X - WINDOW_X / 8, 5 * WINDOW_Y / 6);
-	buttonQuit.setColor(sf::Color::White);
+	textRect = buttonQuit.sprite.getLocalBounds();
+	buttonQuit.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	buttonQuit.sprite.setPosition(WINDOW_X - WINDOW_X / 8, 5 * WINDOW_Y / 6);
+	buttonQuit.sprite.setColor(sf::Color::White);
 	return true;
 };
 
@@ -79,19 +83,19 @@ int screen0::Events(sf::RenderWindow &window) {
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonStart.getGlobalBounds().contains(mousePos)) return screenGame; // If start button clicked
-				if (buttonHelp.getGlobalBounds().contains(mousePos)) return screenHelp; // If help button clicked
-				if (buttonOptions.getGlobalBounds().contains(mousePos)) return screenOptions; // If options button clicked
-				if (buttonQuit.getGlobalBounds().contains(mousePos)) return screenQuitGame; // If quit button clicked
+				if (buttonStart.sprite.getGlobalBounds().contains(mousePos)) return screenGame; // If start button clicked
+				if (buttonHelp.sprite.getGlobalBounds().contains(mousePos)) return screenHelp; // If help button clicked
+				if (buttonOptions.sprite.getGlobalBounds().contains(mousePos)) return screenOptions; // If options button clicked
+				if (buttonQuit.sprite.getGlobalBounds().contains(mousePos)) return screenQuitGame; // If quit button clicked
 			}
 		}
 		//If mouse is moved
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-			buttonHighlightDetect(mousePos, buttonStart);
-			buttonHighlightDetect(mousePos, buttonHelp);
-			buttonHighlightDetect(mousePos, buttonOptions);
-			buttonHighlightDetect(mousePos, buttonQuit);
+			buttonHighlightDetect(mousePos, buttonStart.sprite);
+			buttonHighlightDetect(mousePos, buttonHelp.sprite);
+			buttonHighlightDetect(mousePos, buttonOptions.sprite);
+			buttonHighlightDetect(mousePos, buttonQuit.sprite);
 		}
 	}
 	return getCurrentScreen();
@@ -102,10 +106,10 @@ void screen0::Draw(sf::RenderWindow &window){
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
-	window.draw(buttonStart);
-	window.draw(buttonHelp);
-	window.draw(buttonOptions);
-	window.draw(buttonQuit);
+	window.draw(buttonStart.sprite);
+	window.draw(buttonHelp.sprite);
+	window.draw(buttonOptions.sprite);
+	window.draw(buttonQuit.sprite);
 	window.display();
 }
 

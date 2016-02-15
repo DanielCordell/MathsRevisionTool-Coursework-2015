@@ -1,8 +1,8 @@
 #pragma once
-#include "SFML\System.hpp"
+#include "SFML\Graphics.hpp"
 
 struct Score {
-	static sf::Time timeTaken;
 	static int finalScore;
 	static int livesRemaining;
+	static bool didBeatHighScore;
 };
