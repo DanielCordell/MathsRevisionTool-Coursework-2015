@@ -8,3 +8,5 @@ Has a gui and everything (oooooh).
 Required Libraries:
 * SFML 2.3.2
 * That's it
+
+1871 lines of code and counting
