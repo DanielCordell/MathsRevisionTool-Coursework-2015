@@ -19,7 +19,7 @@ bool screen1::Init() {
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getLocalBounds().width, WINDOW_Y / backgroundSprite.getLocalBounds().height);
 
 	//Initializing Text Values
-	screenTitle = sf::Text("Settings Screen", font, 50);
+	screenTitle = sf::Text("Settings", font, 50);
 	screenTitleVolume = sf::Text("Volume Options", font, 40);
 	screenTitleQuestions = sf::Text("Enable / Disable Questions", font, 40);
 	volumeText = sf::Text("Volume", font, 28);
@@ -79,7 +79,7 @@ bool screen1::Init() {
 	//Initializing Question Buttons
 	questionButtonAddBack.setSize(muteButtonBack.getSize());
 	questionButtonAddBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonAddBack.setPosition(muteButtonBack.getPosition().x, 17 * WINDOW_Y / 32.0f);
+	questionButtonAddBack.setPosition(muteButtonBack.getPosition().x, 18 * WINDOW_Y / 32.0f);
 	questionButtonAddBack.setOutlineColor(sf::Color::Black);
 	questionButtonAddBack.setOutlineThickness(2);
 	questionButtonAddSprite.setTexture(buttonCrossTexture);
@@ -87,11 +87,11 @@ bool screen1::Init() {
 	questionButtonAddSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonAddSprite.setPosition(questionButtonAddBack.getPosition());
 	questionTextAdd.setOrigin(questionTextAdd.getLocalBounds().width / 2, questionTextAdd.getLocalBounds().height / 2);
-	questionTextAdd.setPosition(questionButtonAddBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextAdd.setPosition(questionButtonAddBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 
 	questionButtonSubtractBack.setSize(muteButtonBack.getSize());
 	questionButtonSubtractBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonSubtractBack.setPosition(muteButtonBack.getPosition().x - 4 * muteButtonBack.getLocalBounds().width, 17 * WINDOW_Y / 32.0f);
+	questionButtonSubtractBack.setPosition(muteButtonBack.getPosition().x - 4 * muteButtonBack.getLocalBounds().width, 18 * WINDOW_Y / 32.0f);
 	questionButtonSubtractBack.setOutlineColor(sf::Color::Black);
 	questionButtonSubtractBack.setOutlineThickness(2);
 	questionButtonSubtractSprite.setTexture(buttonCrossTexture);
@@ -99,11 +99,11 @@ bool screen1::Init() {
 	questionButtonSubtractSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonSubtractSprite.setPosition(questionButtonSubtractBack.getPosition());
 	questionTextSubtract.setOrigin(questionTextSubtract.getLocalBounds().width / 2, questionTextSubtract.getLocalBounds().height / 2);
-	questionTextSubtract.setPosition(questionButtonSubtractBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextSubtract.setPosition(questionButtonSubtractBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 
 	questionButtonDivideBack.setSize(muteButtonBack.getSize());
 	questionButtonDivideBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonDivideBack.setPosition(muteButtonBack.getPosition().x - 8 * muteButtonBack.getLocalBounds().width, 17 * WINDOW_Y / 32.0f);
+	questionButtonDivideBack.setPosition(muteButtonBack.getPosition().x - 8 * muteButtonBack.getLocalBounds().width, 18 * WINDOW_Y / 32.0f);
 	questionButtonDivideBack.setOutlineColor(sf::Color::Black);
 	questionButtonDivideBack.setOutlineThickness(2);
 	questionButtonDivideSprite.setTexture(buttonCrossTexture);
@@ -111,11 +111,11 @@ bool screen1::Init() {
 	questionButtonDivideSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonDivideSprite.setPosition(questionButtonDivideBack.getPosition());
 	questionTextDivide.setOrigin(questionTextDivide.getLocalBounds().width / 2, questionTextDivide.getLocalBounds().height / 2);
-	questionTextDivide.setPosition(questionButtonDivideBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextDivide.setPosition(questionButtonDivideBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 
 	questionButtonFunctionsBack.setSize(muteButtonBack.getSize());
 	questionButtonFunctionsBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonFunctionsBack.setPosition(muteButtonBack.getPosition().x - 16 * muteButtonBack.getLocalBounds().width, 17 * WINDOW_Y / 32.0f);
+	questionButtonFunctionsBack.setPosition(muteButtonBack.getPosition().x - 16 * muteButtonBack.getLocalBounds().width, 18 * WINDOW_Y / 32.0f);
 	questionButtonFunctionsBack.setOutlineColor(sf::Color::Black);
 	questionButtonFunctionsBack.setOutlineThickness(2);
 	questionButtonFunctionsSprite.setTexture(buttonCrossTexture);
@@ -123,11 +123,11 @@ bool screen1::Init() {
 	questionButtonFunctionsSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonFunctionsSprite.setPosition(questionButtonFunctionsBack.getPosition());
 	questionTextFunctions.setOrigin(questionTextFunctions.getLocalBounds().width / 2, questionTextFunctions.getLocalBounds().height / 2);
-	questionTextFunctions.setPosition(questionButtonFunctionsBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextFunctions.setPosition(questionButtonFunctionsBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 
 	questionButtonMultiplyBack.setSize(muteButtonBack.getSize());
 	questionButtonMultiplyBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonMultiplyBack.setPosition(muteButtonBack.getPosition().x - 12 * muteButtonBack.getLocalBounds().width, 17 * WINDOW_Y / 32.0f);
+	questionButtonMultiplyBack.setPosition(muteButtonBack.getPosition().x - 12 * muteButtonBack.getLocalBounds().width, 18 * WINDOW_Y / 32.0f);
 	questionButtonMultiplyBack.setOutlineColor(sf::Color::Black);
 	questionButtonMultiplyBack.setOutlineThickness(2);
 	questionButtonMultiplySprite.setTexture(buttonCrossTexture);
@@ -135,12 +135,12 @@ bool screen1::Init() {
 	questionButtonMultiplySprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonMultiplySprite.setPosition(questionButtonMultiplyBack.getPosition());
 	questionTextMultiply.setOrigin(questionTextMultiply.getLocalBounds().width / 2, questionTextMultiply.getLocalBounds().height / 2);
-	questionTextMultiply.setPosition(questionButtonMultiplyBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextMultiply.setPosition(questionButtonMultiplyBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 	questionButtonMultiplyFractionSprite.setTexture(buttonCrossTexture);
 
 	questionButtonQuadraticBack.setSize(muteButtonBack.getSize());
 	questionButtonQuadraticBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonQuadraticBack.setPosition(muteButtonBack.getPosition().x + 4 * muteButtonBack.getLocalBounds().width, 17 * WINDOW_Y / 32.0f);
+	questionButtonQuadraticBack.setPosition(muteButtonBack.getPosition().x + 4 * muteButtonBack.getLocalBounds().width, 18 * WINDOW_Y / 32.0f);
 	questionButtonQuadraticBack.setOutlineColor(sf::Color::Black);
 	questionButtonQuadraticBack.setOutlineThickness(2);
 	questionButtonQuadraticSprite.setTexture(buttonCrossTexture);
@@ -148,11 +148,11 @@ bool screen1::Init() {
 	questionButtonQuadraticSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonQuadraticSprite.setPosition(questionButtonQuadraticBack.getPosition());
 	questionTextQuadratic.setOrigin(questionTextQuadratic.getLocalBounds().width / 2, questionTextQuadratic.getLocalBounds().height / 2);
-	questionTextQuadratic.setPosition(questionButtonQuadraticBack.getPosition().x, 14 * WINDOW_Y / 32.0f);
+	questionTextQuadratic.setPosition(questionButtonQuadraticBack.getPosition().x, 15 * WINDOW_Y / 32.0f);
 
 	questionButtonSimultaneousBack.setSize(muteButtonBack.getSize());
 	questionButtonSimultaneousBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonSimultaneousBack.setPosition(muteButtonBack.getPosition().x - 4 * muteButtonBack.getLocalBounds().width, 22 * WINDOW_Y / 32.0f);
+	questionButtonSimultaneousBack.setPosition(muteButtonBack.getPosition().x - 4 * muteButtonBack.getLocalBounds().width, 24 * WINDOW_Y / 32.0f);
 	questionButtonSimultaneousBack.setOutlineColor(sf::Color::Black);
 	questionButtonSimultaneousBack.setOutlineThickness(2);
 	questionButtonSimultaneousSprite.setTexture(buttonCrossTexture);
@@ -160,11 +160,11 @@ bool screen1::Init() {
 	questionButtonSimultaneousSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonSimultaneousSprite.setPosition(questionButtonSimultaneousBack.getPosition());
 	questionTextSimultaneous.setOrigin(questionTextSimultaneous.getLocalBounds().width / 2, questionTextSimultaneous.getLocalBounds().height / 2);
-	questionTextSimultaneous.setPosition(questionButtonSimultaneousBack.getPosition().x, 19 * WINDOW_Y / 32.0f);
+	questionTextSimultaneous.setPosition(questionButtonSimultaneousBack.getPosition().x, 21 * WINDOW_Y / 32.0f);
 	
 	questionButtonMultiplyFractionBack.setSize(muteButtonBack.getSize());
 	questionButtonMultiplyFractionBack.setOrigin(muteButtonBack.getOrigin());
-	questionButtonMultiplyFractionBack.setPosition(muteButtonBack.getPosition().x - 8 * muteButtonBack.getLocalBounds().width, 22 * WINDOW_Y / 32.0f);
+	questionButtonMultiplyFractionBack.setPosition(muteButtonBack.getPosition().x - 8 * muteButtonBack.getLocalBounds().width, 24 * WINDOW_Y / 32.0f);
 	questionButtonMultiplyFractionBack.setOutlineColor(sf::Color::Black);
 	questionButtonMultiplyFractionBack.setOutlineThickness(2);
 	questionButtonMultiplyFractionSprite.setTexture(buttonCrossTexture);
@@ -172,7 +172,7 @@ bool screen1::Init() {
 	questionButtonMultiplyFractionSprite.setOrigin(muteButtonCrossSprite.getOrigin());
 	questionButtonMultiplyFractionSprite.setPosition(questionButtonMultiplyFractionBack.getPosition());
 	questionTextMultiplyFraction.setOrigin(questionTextMultiplyFraction.getLocalBounds().width / 2, questionTextMultiplyFraction.getLocalBounds().height / 2);
-	questionTextMultiplyFraction.setPosition(questionButtonMultiplyFractionBack.getPosition().x, 19 * WINDOW_Y / 32.0f);
+	questionTextMultiplyFraction.setPosition(questionButtonMultiplyFractionBack.getPosition().x, 21 * WINDOW_Y / 32.0f);
 
 	//Positioning Titles and Return Button
 	sf::FloatRect textRect = screenTitle.getLocalBounds();
@@ -187,13 +187,13 @@ bool screen1::Init() {
 
 	textRect = screenTitleQuestions.getLocalBounds();
 	screenTitleQuestions.setOrigin(textRect.width / 2, textRect.height / 2);
-	screenTitleQuestions.setPosition(WINDOW_X / 2.0f, 6 * WINDOW_Y / 16.0f);
+	screenTitleQuestions.setPosition(WINDOW_X / 2.0f, 13 * WINDOW_Y / 32.0f);
 	screenTitleQuestions.setColor(sf::Color::Black);
 
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
+	buttonBackToMenu.sprite.setPosition(WINDOW_X - 150, WINDOW_Y - 100);
 
 	//Misc
 	canVolumeMove = false;

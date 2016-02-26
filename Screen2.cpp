@@ -24,8 +24,8 @@ bool screen2::Init() {
 	screenTitle = sf::Text("", font, 35);
 	userInputText = sf::Text("", font, 40);
 	userInputValidText = sf::Text("", font, 20);
-	scoreText = sf::Text("", font, 60);
-	highScoreText = sf::Text("", font, 60);
+	scoreText = sf::Text("Score:     0", font, 60);
+	highScoreText = sf::Text("Highscore: 0", font, 60);
 	timerText = sf::Text("", font, 60);
 
 
@@ -38,43 +38,40 @@ bool screen2::Init() {
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
-
-	timerText.setPosition(23 * WINDOW_X / 32.0f, 10 * WINDOW_Y / 32.0f);
-	timerText.setColor(sf::Color::Black);
+	buttonBackToMenu.sprite.setPosition(WINDOW_X - 150, WINDOW_Y - 100);
 
 	//Initializing Answer Box
-	userInputBox.setSize(sf::Vector2f(10 * WINDOW_X / 32.0f, WINDOW_Y / 16.0f));
-	userInputBox.setOrigin(userInputBox.getLocalBounds().width / 2, userInputBox.getLocalBounds().height / 2);
-	userInputBox.setPosition(sf::Vector2f(13 * WINDOW_X / 16.0f, buttonBackToMenu.sprite.getPosition().y));
+	userInputBox.setSize(sf::Vector2f(18 * WINDOW_X / 64.0f, WINDOW_Y / 16.0f));
+	userInputBox.setOrigin(userInputBox.getLocalBounds().width / 2.0f, userInputBox.getLocalBounds().height / 2.0f);
+	userInputBox.setPosition(sf::Vector2f(6 * WINDOW_X / 32.0f, 3 * WINDOW_Y / 8.0f));
 	userInputBox.setFillColor(sf::Color::Black);
 	userInputBox.setOutlineColor(sf::Color::White);
 	userInputBox.setOutlineThickness(2);
 	userInputText.setOrigin(0, userInputText.getLocalBounds().height / 2.0f);
-	userInputText.setPosition(userInputBox.getGlobalBounds().left*1.01f,userInputBox.getPosition().y - userInputBox.getLocalBounds().height / 2);
+	userInputText.setPosition(userInputBox.getGlobalBounds().left*1.1f, userInputBox.getPosition().y - userInputBox.getLocalBounds().height / 2.0f);
 	userInputText.setColor(sf::Color::White);
-	userInputValidText.setPosition(userInputBox.getGlobalBounds().left, userInputBox.getGlobalBounds().top - userInputBox.getLocalBounds().height);
+	userInputValidText.setPosition(userInputBox.getGlobalBounds().left, userInputBox.getGlobalBounds().top - userInputBox.getLocalBounds().height / 2.0f);
 	userInputValidText.setColor(sf::Color::Transparent);
 	userInputCursorBlink.setSize(sf::Vector2f(WINDOW_X / 196.0f, 2 * userInputBox.getSize().y / 3.0f));
 	userInputCursorBlink.setOrigin(0, userInputCursorBlink.getSize().y / 2.0f);
-	userInputCursorBlink.setPosition(userInputText.getPosition().x, userInputBox.getPosition().y
-);
+	userInputCursorBlink.setPosition(userInputText.getPosition().x, userInputBox.getPosition().y);
 
 	//Initializing Hearts/Lives
 	sf::Sprite baseSprite;
-	auto bounds = userInputBox.getGlobalBounds();
 	for (int i = 0; i <= 2; i++) {
 		hearts.push_back(baseSprite);
 		hearts[i].setTexture(heartFullTexture);
 		hearts[i].setOrigin(sf::Vector2f(heartFullTexture.getSize()));
-		hearts[i].setPosition(sf::Vector2f((bounds.width + bounds.left) - (bounds.width/3.0f) * (2-i), 6 * WINDOW_Y / 8.0f));
+		hearts[i].setPosition(sf::Vector2f((WINDOW_X - 20) - (9 * heartFullTexture.getSize().x / 8.0f) * (2-i), 5 * heartFullTexture.getSize().y / 4.0f));
 	}
 
-	//Initializing Score Text
-	scoreText.setPosition(WINDOW_X / 32.0f, 14 * WINDOW_Y / 32.0f);
+	//Initializing Score and Timer Text
+	scoreText.setPosition(WINDOW_X / 32.0f, 25 * WINDOW_Y / 32.0f);
 	scoreText.setColor(sf::Color::Black);
-	highScoreText.setPosition(WINDOW_X / 32.0f, 17 * WINDOW_Y / 32.0f);
+	highScoreText.setPosition(WINDOW_X / 32.0f, 28 * WINDOW_Y / 32.0f);
 	highScoreText.setColor(sf::Color::Black);
+	timerText.setPosition(WINDOW_X / 32.0f, 22 * WINDOW_Y / 32.0f);
+	timerText.setColor(sf::Color::Black);
 
 	return true;
 }
@@ -134,12 +131,12 @@ int screen2::Events(sf::RenderWindow & window)
 					userInputValidText.setColor(sf::Color::Transparent);
 				}
 				else {
-					userInputValidText.setString("16 characters maximum.");
+					userInputValidText.setString("16 characters maximum");
 					userInputValidText.setColor(sf::Color::Black);
 				}
 			}
 			else {
-				userInputValidText.setString("Please enter a valid character:\n(0 - 9, '/', and '-')");
+				userInputValidText.setString("Please enter a valid character: (0 - 9, '/', and '-')");
 				userInputValidText.setColor(sf::Color::Black);
 			}
 			
@@ -191,12 +188,8 @@ void screen2::Update()
 {
 	sf::FloatRect inputTextRect = userInputText.getGlobalBounds();
 	// Update the position of the blinking cursor
-	if (userInputText.getString().getSize() == 0) {
-		userInputCursorBlink.setPosition(inputTextRect.left + inputTextRect.width, userInputCursorBlink.getPosition().y);
-	}
-	else {
-		userInputCursorBlink.setPosition(inputTextRect.left + inputTextRect.width, userInputCursorBlink.getPosition().y);
-	}
+	userInputCursorBlink.setPosition(inputTextRect.left + inputTextRect.width, userInputCursorBlink.getPosition().y);
+
 	// Update the color of the blinking cursor
 	if (gameClock.getElapsedTime().asMilliseconds() % 1000 > 500) {
 		userInputCursorBlink.setFillColor(sf::Color::White);
@@ -232,9 +225,9 @@ void screen2::Update()
 	scoreText.setString("Score:     " + std::to_string(scoreCount));
 	highScoreText.setString("Highscore: " + std::to_string(Settings::highScore));
 
-	int seconds = gameClock.getElapsedTime().asMilliseconds() / 1000;
-	int milliseconds = (gameClock.getElapsedTime().asMilliseconds() - seconds * 1000) / 10;
-	timerText.setString(std::to_string(seconds) + ":" + std::to_string(milliseconds));
+	int minutes = gameClock.getElapsedTime().asSeconds() / 60;
+	int seconds = (gameClock.getElapsedTime().asMilliseconds() / 1000) % 60;
+	timerText.setString("Time:   " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds));
 
 	if (seconds >= 250 && seconds < 280) {
 		timerText.setColor(sf::Color(255, 165, 0));
@@ -242,13 +235,16 @@ void screen2::Update()
 	else if (seconds >= 280  && seconds < 290) {
 		timerText.setColor(sf::Color::Red);
 	}
-	else if (seconds >= 290) {
+	else if (seconds >= 290 && seconds < 300) {
 		if (seconds % 2 == 0) {
 			timerText.setColor(sf::Color::Red);
 		}
 		else {
 			timerText.setColor(sf::Color::Black);
 		}
+	}
+	else if (seconds >= 300) {
+		gameOver = true;
 	}
 
 }

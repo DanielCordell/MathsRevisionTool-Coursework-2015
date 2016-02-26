@@ -32,7 +32,7 @@ bool screen4::Init() {
 	buttonBackToMenu.InitSprite();
 	textRect = buttonBackToMenu.sprite.getLocalBounds();
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonBackToMenu.sprite.setPosition(150, WINDOW_Y - 100);
+	buttonBackToMenu.sprite.setPosition(WINDOW_X - 150, WINDOW_Y - 100);
 
 	textRect = newHighScoreText.getLocalBounds();
 	newHighScoreText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);

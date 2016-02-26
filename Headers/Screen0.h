@@ -8,7 +8,7 @@ private:
 
 	Button buttonStart;
 	Button buttonHelp;
-	Button buttonOptions;
+	Button buttonSettings;
 	Button buttonQuit;
 	sf::Font font;
 
