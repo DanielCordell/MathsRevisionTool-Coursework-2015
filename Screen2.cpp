@@ -100,7 +100,7 @@ int screen2::Events(sf::RenderWindow & window)
 		//If the game should quit
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
-			endGame(scoreCount, livesCount, didBeatHighScore);
+			gameOver = true;
 			return screenScore;
 		}
 		// If the mouse button is pressed
@@ -108,7 +108,7 @@ int screen2::Events(sf::RenderWindow & window)
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
 				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
-					endGame(scoreCount, livesCount, didBeatHighScore);
+					gameOver = true;
 					return screenScore;
 				}
 			}
@@ -207,7 +207,7 @@ void screen2::Update()
 		else {
 			livesCount--;
 			if (livesCount == 0) {
-				endGame(scoreCount, livesCount, didBeatHighScore);
+				gameOver = true;
 			}
 			else {
 				GenerateQuestion();
@@ -275,6 +275,5 @@ void screen2::endGame(int finalScore, int livesRemaining, bool didBeatHighScore)
 	Score::finalScore = finalScore;
 	Score::livesRemaining = livesRemaining;
 	Score::didBeatHighScore = didBeatHighScore;
-	gameOver = true;
 }; 
 
