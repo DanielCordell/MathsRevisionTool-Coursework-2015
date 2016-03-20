@@ -47,8 +47,8 @@ std::pair<std::string, std::string> questionGenerator::generateQuadratic() {
 	int coeffC = factorValue1 * factorValue2;
 
 	bool useLarger = getBool();
-	std::string questionText = ("What is the value of the " + std::string((solution1 == solution2) ? "" : (useLarger ? "largest" : "smallest")) + " solution to this equation?\n\n");
-	questionText.append("x² + " + std::to_string(coeffX) + "x + " + std::to_string(coeffC) + " = 0");
+	std::string questionText = ("What is the value of the " + std::string((solution1 == solution2) ? "single" : (useLarger ? "largest" : "smallest")) + " solution to this equation?\n\n");
+	questionText.append("xÂ² + " + std::to_string(coeffX) + "x + " + std::to_string(coeffC) + " = 0");
 
 	std::string answerText;
 	if (useLarger) {
@@ -89,7 +89,7 @@ std::pair<std::string, std::string> questionGenerator::generateMultiply() {
 	int solution = value1 * value2;
 
 	std::string questionText = "What is the solution to this equation?\n\n";
-	questionText.append(std::to_string(value1) + " × " + std::to_string(value2) + " = ?");
+	questionText.append(std::to_string(value1) + " Ã— " + std::to_string(value2) + " = ?");
 	std::string answerText = std::to_string(solution);
 
 	return std::make_pair(questionText, answerText);
@@ -100,7 +100,7 @@ std::pair<std::string, std::string> questionGenerator::generateDivide() {
 	int dividend = quotent * divisor;
 
 	std::string questionText = "What is the solution to this equation?\n\n"; 
-	questionText.append(std::to_string(dividend) + " ÷ " + std::to_string(divisor) + " = ?");
+	questionText.append(std::to_string(dividend) + " Ã· " + std::to_string(divisor) + " = ?");
 	std::string answerText = std::to_string(quotent);
 
 	return std::make_pair(questionText, answerText);
@@ -128,7 +128,7 @@ std::pair<std::string, std::string> questionGenerator::generateMultiplyFraction(
 	}
 
 	std::string questionText = "What is the resulting simplified fraction from this multiplication?\n\n";
-	questionText.append(std::to_string(numerator1) + "/" + std::to_string(denominator1) + " × " + std::to_string(numerator2) + "/" + std::to_string(denominator2));
+	questionText.append(std::to_string(numerator1) + "/" + std::to_string(denominator1) + " Ã— " + std::to_string(numerator2) + "/" + std::to_string(denominator2));
 	std::string answerText = denominatorAnswer == 1 ? std::to_string(numeratorAnswer) : std::to_string(numeratorAnswer) + "/" + std::to_string(denominatorAnswer);
 
 	return std::make_pair(questionText, answerText);
