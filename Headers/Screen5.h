@@ -7,6 +7,7 @@ class screen5: public cScreen {
 private:
 	sf::Text screenTitle;
 	sf::Font font;
+	sf::Text answerText;
 
 	Button buttonContinue;
 	Button buttonRetry;

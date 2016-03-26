@@ -1,8 +1,9 @@
 #include "Headers\Rand.h"
 #include "Headers\QuestionGen.h"
-#include <iostream> // Temp
+#include <iostream>
 #include "Headers\Settings.h"
 #include <vector>
+
 std::pair<std::string, std::string> questionGenerator::chooseQuestion() {
 	std::vector<questionTypes> allowedQuestions;
 	for (auto iterator : Settings::questionSettings) {

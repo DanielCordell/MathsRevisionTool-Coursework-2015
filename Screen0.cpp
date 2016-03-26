@@ -31,6 +31,7 @@ bool screen0::Init() {
 
 	//Initializing Text Values
 	screenTitle = sf::Text("Number Wizard", font, 100);
+	name = sf::Text("Created by Daniel Cordell", font, 40);
 	buttonStart.sprite.setTexture(buttonStart.texture);
 	buttonHelp.sprite.setTexture(buttonHelp.texture);
 	buttonQuit.sprite.setTexture(buttonQuit.texture);
@@ -39,25 +40,31 @@ bool screen0::Init() {
 	//Positioning Text
 	sf::FloatRect textRect;
 	textRect = screenTitle.getLocalBounds();
-	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	screenTitle.setOrigin(textRect.width / 2, textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 8.0f);
 	screenTitle.setColor(sf::Color::Black);
 
+	textRect = name.getLocalBounds();
+	name.setOrigin(textRect.width, textRect.height);
+	name.setPosition(WINDOW_X - 4, WINDOW_Y - 14);
+	name.setColor(sf::Color::Black);
+
+	//Positioning Buttons
 	textRect = buttonStart.sprite.getLocalBounds();
 	buttonStart.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonStart.sprite.setPosition(WINDOW_X / 8, WINDOW_Y / 2);
+	buttonStart.sprite.setPosition(WINDOW_X / 8, 5 * WINDOW_Y / 8);
 
 	textRect = buttonHelp.sprite.getLocalBounds();
 	buttonHelp.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonHelp.sprite.setPosition(WINDOW_X - WINDOW_X / 8, WINDOW_Y / 2);
+	buttonHelp.sprite.setPosition(3 * WINDOW_X / 8, 5 * WINDOW_Y / 8);
 
 	textRect = buttonSettings.sprite.getLocalBounds();
 	buttonSettings.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonSettings.sprite.setPosition(WINDOW_X / 8, 5 * WINDOW_Y / 6);
+	buttonSettings.sprite.setPosition(5 * WINDOW_X / 8, 5 * WINDOW_Y / 8);
 
 	textRect = buttonQuit.sprite.getLocalBounds();
 	buttonQuit.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonQuit.sprite.setPosition(WINDOW_X - WINDOW_X / 8, 5 * WINDOW_Y / 6);
+	buttonQuit.sprite.setPosition(7 * WINDOW_X / 8, 5 * WINDOW_Y / 8);
 	return true;
 };
 
@@ -120,6 +127,7 @@ void screen0::Draw(sf::RenderWindow &window) {
 	window.draw(buttonHelp.sprite);
 	window.draw(buttonSettings.sprite);
 	window.draw(buttonQuit.sprite);
+	window.draw(name);
 	window.display();
 }
 

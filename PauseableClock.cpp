@@ -1,4 +1,4 @@
-#include "Headers\PauseableClock.hpp"
+#include "Headers\PauseableClock.h"
 
 namespace sf {
 	bool PauseableClock::universalpause = false;

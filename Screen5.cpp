@@ -18,7 +18,8 @@ bool screen5::Init() {
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
 	//Initializing Text and Buttons
-	screenTitle = sf::Text("Retry Question or Continue", font, 80);
+	screenTitle = sf::Text("Retry Question or New Question?", font, 80);
+	answerText = sf::Text("Correct Answer was: ", font, 50);
 	buttonContinue.InitSprite();
 	buttonRetry.InitSprite();
 
@@ -28,6 +29,11 @@ bool screen5::Init() {
 	screenTitle.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2, 80);
 	screenTitle.setColor(sf::Color::Black);
+
+	textRect = answerText.getLocalBounds();
+	answerText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+	answerText.setPosition(WINDOW_X / 2, 7 * WINDOW_Y / 8);
+	answerText.setColor(sf::Color::Transparent);
 
 	textRect = buttonRetry.sprite.getLocalBounds();
 	buttonRetry.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
@@ -55,6 +61,11 @@ int screen5::Events(sf::RenderWindow & window) {
 				{
 					if (buttonContinue.sprite.getGlobalBounds().contains(mousePos)) {
 						Score::newQuestionFromScreen5 = true;
+						answerText.setColor(sf::Color::Black);
+						window.draw(answerText);
+						window.display();
+						sf::sleep(sf::seconds(2));
+						answerText.setColor(sf::Color::Transparent);
 						return screenGame;
 					}
 					if (buttonRetry.sprite.getGlobalBounds().contains(mousePos)) {
@@ -79,11 +90,12 @@ void screen5::Draw(sf::RenderWindow & window) {
 	window.draw(screenTitle);
 	window.draw(buttonContinue.sprite);
 	window.draw(buttonRetry.sprite);
+	window.draw(answerText);
 	window.display();
 }
 
 void screen5::Update() {
-	// No updating needed
+	answerText.setString("Correct answer was: " + Score::answer);
 }
 
 int screen5::Run(sf::RenderWindow &window) {

@@ -2,7 +2,7 @@
 #include "CScreen.h"
 #include "QuestionGen.h"
 #include "Settings.h"
-#include "PauseableClock.hpp"
+#include "PauseableClock.h"
 
 // Class Declaration for Screen that displays the Game
 class screen2: public cScreen {

@@ -8,8 +8,12 @@ public:
 	GameState();
 	bool initGameState();
 
-	// Game Objects
+	// Game Window
 	sf::RenderWindow Window;
+	
+	// Settings Class
 	Settings settings;
+
+	// List of screens
 	std::vector<cScreen*> Screens;
 };

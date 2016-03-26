@@ -6,4 +6,5 @@ struct Score {
 	static int livesRemaining;
 	static bool didBeatHighScore;
 	static bool newQuestionFromScreen5;
+	static std::string answer;
 };

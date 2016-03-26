@@ -8,6 +8,7 @@
 #include "Headers/Screen5.h"
 #include <iostream>
 
+// GameState constructor
 GameState::GameState() {
 	Window.create(sf::VideoMode(WINDOW_X, WINDOW_Y), "Number Wizard", sf::Style::Close);
 	Window.setKeyRepeatEnabled(false);

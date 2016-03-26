@@ -59,6 +59,8 @@ private:
 	// If true the volume slider is allowed to move
 	bool canVolumeMove;
 
+	// Integer value of the default size of the slider
+	sf::Vector2f defaultSliderSize;
 public:
 	int Run(sf::RenderWindow &window);
 	bool Init();

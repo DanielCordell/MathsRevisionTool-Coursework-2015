@@ -11,6 +11,7 @@ private:
 	Button buttonSettings;
 	Button buttonQuit;
 	sf::Font font;
+	sf::Text name;
 public:
 	int Run(sf::RenderWindow &window);
 	bool Init();

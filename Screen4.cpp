@@ -17,7 +17,7 @@ bool screen4::Init() {
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
 	//Initializing Text Values
-	screenTitle = sf::Text("Score", font, 80);
+	screenTitle = sf::Text("Game Over", font, 80);
 	finalScoreText = sf::Text("", font, 60);
 	livesLeftText = sf::Text("", font, 60);
 	newHighScoreText = sf::Text("New High\n Score!", font, 80);

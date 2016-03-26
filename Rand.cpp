@@ -9,7 +9,18 @@ int getRand(int min, int max) {
 
 // Returns a random boolean value
 bool getBool() {
-	return rand() % 2
+	switch (rand() % 2) {
+	case 0:
+		return true;
+		break;
+	case 1:
+		return false;
+		break;
+	default:
+		// Someone broke the universe again...
+		return true;
+		break;
+	};
 }
 
 // Returns either +1 or -1

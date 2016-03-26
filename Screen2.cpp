@@ -128,6 +128,7 @@ int screen2::Events(sf::RenderWindow & window) {
 		scoreText.setString("");
 		questionAnswered = false;
 		gameClock.pause();
+		Score::answer = questionStore.second;
 		return screenRetry;
 	}
 

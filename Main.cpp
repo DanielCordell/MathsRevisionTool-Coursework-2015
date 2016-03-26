@@ -1,5 +1,4 @@
 // Including all necessary files
-
 #include <string>
 #include <iostream>
 #include <algorithm>
