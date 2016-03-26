@@ -51,7 +51,6 @@ bool screen1::Init() {
 
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
 	volumeSlider.setSize(sf::Vector2f(WINDOW_X / 128.0f, 5 * volSldBackRect.height / 4.0f));
-	defaultSliderSize = volumeSlider.getSize();
 	sf::FloatRect volumeSliderRect = volumeSlider.getLocalBounds();
 	volumeSlider.setOrigin(sf::Vector2f(volumeSliderRect.width / 2.0f, volumeSliderRect.height));
 	volumeSlider.setPosition((volSldBackRect.left + Settings::volumePercent / 100.0f * (volSldBackRect.width)), volSldBackRect.height + volSldBackRect.top);
