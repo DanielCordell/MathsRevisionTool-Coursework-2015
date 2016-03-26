@@ -2,20 +2,19 @@
 #include "Headers/Constants.h"
 #include <iostream>
 #include <sstream>
+
 //Help Screen
 
 bool screen3::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		||	!backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
-		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
+		|| !backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
+		|| !buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
 	//Initialize Background
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
-
-
 
 	//Initializing Text Values
 	screenTitle = sf::Text("Welcome to Number Wizard", font, 50);
@@ -50,8 +49,7 @@ bool screen3::Init() {
 	return true;
 }
 
-int screen3::Events(sf::RenderWindow & window)
-{
+int screen3::Events(sf::RenderWindow & window) {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
@@ -63,7 +61,10 @@ int screen3::Events(sf::RenderWindow & window)
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
+					buttonClickSound.play();
+					return screenMainMenu;
+				}
 			}
 		}
 		//If mouse is moved
@@ -75,9 +76,7 @@ int screen3::Events(sf::RenderWindow & window)
 	return getCurrentScreen();
 }
 
-
-void screen3::Draw(sf::RenderWindow & window)
-{
+void screen3::Draw(sf::RenderWindow & window) {
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -86,14 +85,11 @@ void screen3::Draw(sf::RenderWindow & window)
 	window.display();
 }
 
-void screen3::Update()
-{
-
+void screen3::Update() {
 }
 
 int screen3::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	bool doQuit = false;
 
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {

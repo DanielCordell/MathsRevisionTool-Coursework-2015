@@ -1,12 +1,12 @@
 #include "Headers/Settings.h"
 #include <iostream>
 #include <sstream>
+#include <Windows.h>
 
 int Settings::highScore;
 int Settings::volumePercent;
 bool Settings::volumeMute;
 std::map<questionTypes, bool> Settings::questionSettings;
-
 
 Settings::Settings() {
 	settingsFile = std::fstream("Settings/settings.txt");
@@ -44,6 +44,7 @@ Settings::~Settings() {
 }
 
 void Settings::generateSettingsFile() {
+	CreateDirectory("Settings", 0);
 	settingsFile.open("Settings/settings.txt", std::fstream::out);
 	settingsFile << "// Volume Settings // \n";
 	settingsFile << "volPer:50\n";
@@ -71,17 +72,17 @@ void Settings::loadSettingsFromFile(std::string settingsLine) {
 	int settingValue;
 	std::istringstream buffer(settingsLine.substr(7));
 	buffer >> settingValue;
-	
+
 	std::cout << "Loading Setting: " << settingsLine << " into " << settingName << " With Value " << settingValue << "\n";
-	
+
 	// If the setting is volume level
 	if (settingName == "volPer") {
 		volumePercent = settingValue;
 	}
 
 	// If the setting is volume muted
-	else if (settingName == "volMut") { 
-		volumeMute = settingValue; 
+	else if (settingName == "volMut") {
+		volumeMute = settingValue;
 	}
 
 	else if (settingName == "hghScr") {
@@ -98,10 +99,8 @@ void Settings::loadSettingsFromFile(std::string settingsLine) {
 }
 
 void Settings::initSettings() {
-
 	//If the file does not exist
 	if (!settingsFile.good()) {
-
 		//Generate Settings File
 		std::cout << "Settings File Does Not Exist... \n";
 		std::cout << "Generating Settings File... \n\n";
@@ -114,7 +113,7 @@ void Settings::initSettings() {
 		std::cout << "Settings File Exists... \n\n";
 		settingsFile.close();
 	}
-	
+
 	settingsFile.open("Settings/settings.txt", std::fstream::in);
 	// Read the file line by line
 	std::string settingsLine;

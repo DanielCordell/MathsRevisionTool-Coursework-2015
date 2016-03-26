@@ -8,13 +8,21 @@
 bool screen2::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		||	!backgroundTexture.loadFromFile("Resources/backgroundGame.png")
-		||	!heartEmptyTexture.loadFromFile("Resources/heartEmpty.png")
-		||	!heartFullTexture.loadFromFile("Resources/heartFull.png")
-		||	!buttonBackToMenu.loadTexture("Resources/buttonQuit.png")){
+		|| !backgroundTexture.loadFromFile("Resources/backgroundGame.png")
+		|| !heartEmptyTexture.loadFromFile("Resources/heartEmpty.png")
+		|| !heartFullTexture.loadFromFile("Resources/heartFull.png")
+		|| !buttonBackToMenu.loadTexture("Resources/buttonQuit.png")
+		|| !questionCorrectSoundBuffer.loadFromFile("Resources/questionCorrectSound.wav")
+		|| !questionIncorrectSoundBuffer.loadFromFile("Resources/questionIncorrectSound.wav")) {
 		return false;
-	}	
-		questionAnswered = false;
+	}
+	questionAnswered = false;
+
+	//Initialize Sounds
+	questionCorrectSound.setBuffer(questionCorrectSoundBuffer);
+	questionIncorrectSound.setBuffer(questionIncorrectSoundBuffer);
+	questionCorrectSound.setVolume(Settings::volumePercent);
+	questionIncorrectSound.setVolume(Settings::volumePercent);
 
 	//Initialize Background
 	backgroundSprite.setTexture(backgroundTexture);
@@ -27,7 +35,7 @@ bool screen2::Init() {
 	scoreText = sf::Text("Score:     0", font, 60);
 	highScoreText = sf::Text("Highscore: 0", font, 60);
 	timerText = sf::Text("", font, 60);
-
+	livesText = sf::Text("Lives:", font, 60);
 
 	//Positioning Title and Buttons
 	sf::FloatRect textRect;
@@ -42,8 +50,8 @@ bool screen2::Init() {
 
 	//Initializing Answer Box
 	userInputBox.setSize(sf::Vector2f(18 * WINDOW_X / 64.0f, WINDOW_Y / 16.0f));
-	userInputBox.setOrigin(userInputBox.getLocalBounds().width / 2.0f, userInputBox.getLocalBounds().height / 2.0f);
-	userInputBox.setPosition(sf::Vector2f(6 * WINDOW_X / 32.0f, 3 * WINDOW_Y / 8.0f));
+	userInputBox.setOrigin(0, userInputBox.getLocalBounds().height / 2.0f);
+	userInputBox.setPosition(sf::Vector2f(WINDOW_X / 32.0f, 7 * WINDOW_Y / 16.0f));
 	userInputBox.setFillColor(sf::Color::Black);
 	userInputBox.setOutlineColor(sf::Color::White);
 	userInputBox.setOutlineThickness(2);
@@ -61,9 +69,13 @@ bool screen2::Init() {
 	for (int i = 0; i <= 2; i++) {
 		hearts.push_back(baseSprite);
 		hearts[i].setTexture(heartFullTexture);
-		hearts[i].setOrigin(sf::Vector2f(heartFullTexture.getSize()));
-		hearts[i].setPosition(sf::Vector2f((WINDOW_X - 20) - (9 * heartFullTexture.getSize().x / 8.0f) * (2-i), 5 * heartFullTexture.getSize().y / 4.0f));
+		hearts[i].setOrigin(heartFullTexture.getSize().x, heartFullTexture.getSize().y / 2.0f);
+		hearts[i].setPosition(sf::Vector2f((WINDOW_X - 20) - (9 * heartFullTexture.getSize().x / 8.0f) * (2 - i), 7 * WINDOW_Y / 16.0f));
 	}
+	livesText.setOrigin(livesText.getLocalBounds().width / 2.0f, livesText.getLocalBounds().height / 2.0f);
+	livesText.setPosition(hearts[1].getPosition());
+	livesText.move(-hearts[0].getLocalBounds().width / 2.0f, -hearts[0].getLocalBounds().height);
+	livesText.setColor(sf::Color::Black);
 
 	//Initializing Score and Timer Text
 	scoreText.setPosition(WINDOW_X / 32.0f, 25 * WINDOW_Y / 32.0f);
@@ -77,23 +89,53 @@ bool screen2::Init() {
 }
 
 void screen2::startGame() {
+	//Detect if all question types are disabled
+	bool areQuestionsEnabled = false;
+	for (auto questionSetting : Settings::questionSettings) {
+		if (questionSetting.second) {
+			areQuestionsEnabled = true;
+		}
+	}
+	// If all of the questions are disabled, re-enable all of them
+	if (!areQuestionsEnabled) {
+		for (auto &questionSetting : Settings::questionSettings) questionSetting.second = true;
+	}
+
+	//Reset game settings
 	livesCount = 3;
 	scoreCount = 0;
 	gameOver = false;
+	gameStarted = true;
 	gameClock.restart();
 	didBeatHighScore = false;
+	answerIsIncorrect = false;
+	Score::newQuestionFromScreen5 = false;
 	for (int i = 0; i < 3; i++) {
 		hearts[i].setTexture(heartFullTexture);
 	}
+	userInputValidText.setColor(sf::Color::Transparent);
 	GenerateQuestion();
 }
 
-int screen2::Events(sf::RenderWindow & window)
-{
+int screen2::Events(sf::RenderWindow & window) {
 	if (gameOver) {
 		endGame(scoreCount, livesCount, didBeatHighScore);
 		return screenScore;
 	}
+
+	if (answerIsIncorrect) {
+		answerIsIncorrect = false;
+		scoreText.setString("");
+		questionAnswered = false;
+		gameClock.pause();
+		return screenRetry;
+	}
+
+	if (Score::newQuestionFromScreen5) {
+		Score::newQuestionFromScreen5 = false;
+		GenerateQuestion();
+	}
+
 	// Polling window events
 	sf::Event event;
 	while (window.pollEvent(event)) {
@@ -109,6 +151,7 @@ int screen2::Events(sf::RenderWindow & window)
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
 				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
 					endGame(scoreCount, livesCount, didBeatHighScore);
+					buttonClickSound.play();
 					return screenScore;
 				}
 			}
@@ -120,8 +163,8 @@ int screen2::Events(sf::RenderWindow & window)
 
 			// Detect if entered text is a number
 			if ((textInput - '0') >= 0 && (textInput - '0') <= 9) {
-					validCharacter = true;
-				}
+				validCharacter = true;
+			}
 
 			// Detect if entered text is a valid symbol
 			else if (textInput == '/' || textInput == '-') validCharacter = true;
@@ -131,15 +174,15 @@ int screen2::Events(sf::RenderWindow & window)
 					userInputValidText.setColor(sf::Color::Transparent);
 				}
 				else {
-					userInputValidText.setString("16 characters maximum");
 					userInputValidText.setColor(sf::Color::Black);
+					userInputValidText.setString("16 characters maximum");
 				}
 			}
 			else {
 				userInputValidText.setString("Please enter a valid character: (0 - 9, '/', and '-')");
 				userInputValidText.setColor(sf::Color::Black);
 			}
-			
+
 			// Detect if entered text is a backspace
 			if (textInput == 8) {
 				userInputText.setString(userInputText.getString().substring(0, userInputText.getString().getSize() - 1));
@@ -164,9 +207,7 @@ int screen2::Events(sf::RenderWindow & window)
 	return getCurrentScreen();
 }
 
-
-void screen2::Draw(sf::RenderWindow & window)
-{
+void screen2::Draw(sf::RenderWindow & window) {
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -180,12 +221,13 @@ void screen2::Draw(sf::RenderWindow & window)
 	window.draw(highScoreText);
 	window.draw(timerText);
 	for (auto heart : hearts) window.draw(heart);
-
+	window.draw(livesText);
 	window.display();
 }
 
-void screen2::Update()
-{
+void screen2::Update() {
+	gameClock.start();
+
 	sf::FloatRect inputTextRect = userInputText.getGlobalBounds();
 	// Update the position of the blinking cursor
 	userInputCursorBlink.setPosition(inputTextRect.left + inputTextRect.width, userInputCursorBlink.getPosition().y);
@@ -202,15 +244,17 @@ void screen2::Update()
 		if (questionStore.second == userInputText.getString()) {
 			userInputText.setString("");
 			scoreCount++;
+			questionCorrectSound.play();
 			GenerateQuestion();
 		}
 		else {
 			livesCount--;
+			questionIncorrectSound.play();
 			if (livesCount == 0) {
 				endGame(scoreCount, livesCount, didBeatHighScore);
 			}
 			else {
-				GenerateQuestion();
+				answerIsIncorrect = true;
 			}
 		}
 	}
@@ -232,7 +276,7 @@ void screen2::Update()
 	if (seconds >= 250 && seconds < 280) {
 		timerText.setColor(sf::Color(255, 165, 0));
 	}
-	else if (seconds >= 280  && seconds < 290) {
+	else if (seconds >= 280 && seconds < 290) {
 		timerText.setColor(sf::Color::Red);
 	}
 	else if (seconds >= 290 && seconds < 300) {
@@ -247,12 +291,13 @@ void screen2::Update()
 		gameOver = true;
 	}
 
+	questionCorrectSound.setVolume(Settings::volumePercent);
+	questionIncorrectSound.setVolume(Settings::volumePercent);
 }
 
 int screen2::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	bool doQuit = false;
-	startGame();
+	if (!gameStarted) startGame();
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
@@ -276,5 +321,5 @@ void screen2::endGame(int finalScore, int livesRemaining, bool didBeatHighScore)
 	Score::livesRemaining = livesRemaining;
 	Score::didBeatHighScore = didBeatHighScore;
 	gameOver = true;
-}; 
-
+	gameStarted = false;
+};

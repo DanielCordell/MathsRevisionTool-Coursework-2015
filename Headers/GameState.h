@@ -6,6 +6,7 @@
 class GameState {
 public:
 	GameState();
+	bool initGameState();
 
 	// Game Objects
 	sf::RenderWindow Window;

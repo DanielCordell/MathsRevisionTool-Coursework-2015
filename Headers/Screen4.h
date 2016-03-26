@@ -2,7 +2,7 @@
 #include "CScreen.h"
 
 // Class Declaration for Screen that displays the Score
-class screen4 : public cScreen{
+class screen4: public cScreen {
 private:
 	sf::Text screenTitle;
 	Button buttonBackToMenu;

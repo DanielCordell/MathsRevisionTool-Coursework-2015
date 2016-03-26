@@ -2,7 +2,7 @@
 #include "CScreen.h"
 
 // Class Declaration for Screen that displays the Help Menu
-class screen3 : public cScreen{
+class screen3: public cScreen {
 private:
 	sf::Text screenTitle;
 	Button buttonBackToMenu;

@@ -52,7 +52,7 @@ std::pair<std::string, std::string> questionGenerator::generateQuadratic() {
 
 	std::string answerText;
 	if (useLarger) {
-		answerText =  std::to_string(solution1 > solution2 ? solution1 : solution2);
+		answerText = std::to_string(solution1 > solution2 ? solution1 : solution2);
 	}
 	else {
 		answerText = std::to_string(solution1 < solution2 ? solution1 : solution2);
@@ -99,7 +99,7 @@ std::pair<std::string, std::string> questionGenerator::generateDivide() {
 	int divisor = getRand(10, 30) * getPlMn();
 	int dividend = quotent * divisor;
 
-	std::string questionText = "What is the solution to this equation?\n\n"; 
+	std::string questionText = "What is the solution to this equation?\n\n";
 	questionText.append(std::to_string(dividend) + " ÷ " + std::to_string(divisor) + " = ?");
 	std::string answerText = std::to_string(quotent);
 

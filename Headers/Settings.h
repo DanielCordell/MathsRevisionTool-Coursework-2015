@@ -27,5 +27,4 @@ public:
 	void loadSettingsFromFile(std::string);
 	void generateSettingsFile();
 	questionTypes stringToEnum(std::string);
-
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Button.h"
 
 // Base class for all screen classes
@@ -9,6 +10,9 @@ private:
 protected:
 	sf::Sprite backgroundSprite;
 	sf::Texture backgroundTexture;
+	static sf::Sound buttonClickSound;
+	static sf::SoundBuffer buttonClickSoundBuffer;
+	static sf::Music music;
 public:
 
 	// Game Loop for each screen. Returns an integer value which corresponds to a new screen to display. A value of -1 quits the program.
@@ -26,7 +30,6 @@ public:
 	// Drawing the game to the screen
 	virtual void Draw(sf::RenderWindow &window) = 0;
 
-	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::Text &button);
 	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::Sprite &button);
 	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::RectangleShape &button);
 
@@ -42,5 +45,6 @@ enum screen {
 	screenOptions,
 	screenGame,
 	screenHelp,
-	screenScore
+	screenScore,
+	screenRetry
 };

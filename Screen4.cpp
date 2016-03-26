@@ -8,8 +8,8 @@
 bool screen4::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		||	!backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
-		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
+		|| !backgroundTexture.loadFromFile("Resources/backgroundHelp.png")
+		|| !buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
 	//Initialize Background
@@ -46,8 +46,7 @@ bool screen4::Init() {
 	return true;
 }
 
-int screen4::Events(sf::RenderWindow & window)
-{
+int screen4::Events(sf::RenderWindow & window) {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		// If escape button pressed
@@ -59,7 +58,10 @@ int screen4::Events(sf::RenderWindow & window)
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
+					buttonClickSound.play();
+					return screenMainMenu;
+				}
 			}
 		}
 		//If mouse is moved
@@ -71,9 +73,7 @@ int screen4::Events(sf::RenderWindow & window)
 	return getCurrentScreen();
 }
 
-
-void screen4::Draw(sf::RenderWindow & window)
-{
+void screen4::Draw(sf::RenderWindow & window) {
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -85,8 +85,7 @@ void screen4::Draw(sf::RenderWindow & window)
 	window.display();
 }
 
-void screen4::Update()
-{
+void screen4::Update() {
 	finalScoreText.setString("Final Score:  " + std::to_string(Score::finalScore));
 	livesLeftText.setString("Lives Left:   " + std::to_string(Score::livesRemaining));
 

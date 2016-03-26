@@ -4,7 +4,7 @@
 #include "Constants.h"
 
 // Class Declaration for Screen that displays the Options Menu
-class screen1 : public cScreen{
+class screen1: public cScreen {
 private:
 	sf::Text screenTitle;
 	Button buttonBackToMenu;
@@ -21,11 +21,11 @@ private:
 	sf::Sprite muteButtonCrossSprite;
 
 	sf::Text screenTitleQuestions;
-	
+
 	sf::Text questionTextAdd;
 	sf::RectangleShape questionButtonAddBack;
 	sf::Sprite questionButtonAddSprite;
-	
+
 	sf::Text questionTextSubtract;
 	sf::RectangleShape questionButtonSubtractBack;
 	sf::Sprite questionButtonSubtractSprite;

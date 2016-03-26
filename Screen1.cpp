@@ -7,10 +7,9 @@
 bool screen1::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-		||	!backgroundTexture.loadFromFile("Resources/backgroundSettings.png") 
-		||	!buttonCrossTexture.loadFromFile("Resources/SettingsCross.png")
-		||	!buttonBackToMenu.loadTexture("Resources/buttonReturn.png"))
-	{
+		|| !backgroundTexture.loadFromFile("Resources/backgroundSettings.png")
+		|| !buttonCrossTexture.loadFromFile("Resources/SettingsCross.png")
+		|| !buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
 
@@ -57,7 +56,7 @@ bool screen1::Init() {
 	volumeSlider.setOrigin(sf::Vector2f(volumeSliderRect.width / 2.0f, volumeSliderRect.height));
 	volumeSlider.setPosition((volSldBackRect.left + Settings::volumePercent / 100.0f * (volSldBackRect.width)), volSldBackRect.height + volSldBackRect.top);
 
-	volumeText.setOrigin(volumeText.getLocalBounds().width/2.0f, volumeText.getLocalBounds().height / 2.0f);
+	volumeText.setOrigin(volumeText.getLocalBounds().width / 2.0f, volumeText.getLocalBounds().height / 2.0f);
 	volumeText.setPosition(18 * WINDOW_X / 64.0f, 14 * WINDOW_Y / 64.0f);
 
 	//Initializing Mute Button
@@ -72,7 +71,7 @@ bool screen1::Init() {
 	muteButtonCrossSprite.setOrigin(muteButtonCrossSprite.getLocalBounds().width / 2, muteButtonCrossSprite.getLocalBounds().height / 2);
 	muteButtonCrossSprite.setPosition(muteButtonBack.getPosition());
 	muteButtonCrossSprite.setColor(sf::Color(sf::Color::Transparent));
-	
+
 	muteText.setOrigin(muteText.getLocalBounds().width / 2.0f, muteText.getLocalBounds().height / 2.0f);
 	muteText.setPosition(WINDOW_X - volumeText.getPosition().x, volumeText.getPosition().y);
 
@@ -161,7 +160,7 @@ bool screen1::Init() {
 	questionButtonSimultaneousSprite.setPosition(questionButtonSimultaneousBack.getPosition());
 	questionTextSimultaneous.setOrigin(questionTextSimultaneous.getLocalBounds().width / 2, questionTextSimultaneous.getLocalBounds().height / 2);
 	questionTextSimultaneous.setPosition(questionButtonSimultaneousBack.getPosition().x, 21 * WINDOW_Y / 32.0f);
-	
+
 	questionButtonMultiplyFractionBack.setSize(muteButtonBack.getSize());
 	questionButtonMultiplyFractionBack.setOrigin(muteButtonBack.getOrigin());
 	questionButtonMultiplyFractionBack.setPosition(muteButtonBack.getPosition().x - 8 * muteButtonBack.getLocalBounds().width, 24 * WINDOW_Y / 32.0f);
@@ -211,42 +210,55 @@ int screen1::Events(sf::RenderWindow & window) {
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				
-				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) return 0;
+
+				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
+					buttonClickSound.play();
+					return screenMainMenu;
+				}
 				else if (volumeSliderBack.getBounds().contains(mousePos)) {
 					canVolumeMove = true;
-					Settings::volumePercent = int((mousePos.x-volumeSliderBack[0].position.x) * 100/volumeSliderBack.getBounds().width);
+					Settings::volumePercent = int((mousePos.x - volumeSliderBack[0].position.x) * 100 / volumeSliderBack.getBounds().width);
+					buttonClickSound.play();
 				}
-				
+
 				else if (muteButtonBack.getGlobalBounds().contains(mousePos)) {
 					Settings::volumeMute = !Settings::volumeMute;
 					if (Settings::volumeMute) Settings::volumePercent = 0;
 					else Settings::volumePercent = 50;
+					buttonClickSound.play();
 				}
 
 				else if (questionButtonAddBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::add] = !Settings::questionSettings[questionTypes::add];
+					buttonClickSound.play();
 				}
 				else if (questionButtonSubtractBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::sub] = !Settings::questionSettings[questionTypes::sub];
+					buttonClickSound.play();
 				}
 				else if (questionButtonMultiplyBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::mlt] = !Settings::questionSettings[questionTypes::mlt];
+					buttonClickSound.play();
 				}
 				else if (questionButtonDivideBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::dvd] = !Settings::questionSettings[questionTypes::dvd];
+					buttonClickSound.play();
 				}
 				else if (questionButtonMultiplyFractionBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::mfr] = !Settings::questionSettings[questionTypes::mfr];
+					buttonClickSound.play();
 				}
 				else if (questionButtonFunctionsBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::fns] = !Settings::questionSettings[questionTypes::fns];
+					buttonClickSound.play();
 				}
 				else if (questionButtonQuadraticBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::qdr] = !Settings::questionSettings[questionTypes::qdr];
+					buttonClickSound.play();
 				}
 				else if (questionButtonSimultaneousBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::sim] = !Settings::questionSettings[questionTypes::sim];
+					buttonClickSound.play();
 				}
 			}
 		}
@@ -287,7 +299,6 @@ int screen1::Events(sf::RenderWindow & window) {
 }
 
 void screen1::Update() {
-
 	if (canVolumeMove) {
 		volumeSlider.setFillColor(sf::Color(100, 100, 100));
 	}
@@ -298,7 +309,7 @@ void screen1::Update() {
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
 	volumeSlider.setPosition(volSldBackRect.left + volSldBackRect.width * (Settings::volumePercent / 100.0f), volumeSlider.getPosition().y);
 	volumeSlider.setScale(1, Settings::volumePercent / 150.0f + 1 / 3.0f);
-	
+
 	if (!Settings::volumeMute)					muteButtonCrossSprite.setColor(sf::Color::Transparent);
 	else										muteButtonCrossSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::add])	questionButtonAddSprite.setColor(sf::Color::Transparent);
@@ -317,6 +328,8 @@ void screen1::Update() {
 	else										questionButtonQuadraticSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::sim])	questionButtonSimultaneousSprite.setColor(sf::Color::Transparent);
 	else										questionButtonSimultaneousSprite.setColor(sf::Color::Black);
+
+	buttonClickSound.setVolume(Settings::volumePercent);
 }
 void screen1::Draw(sf::RenderWindow & window) {
 	window.clear();
@@ -367,11 +380,13 @@ void screen1::Draw(sf::RenderWindow & window) {
 	window.draw(questionTextMultiplyFraction);
 
 	window.display();
+
+	music.setVolume(Settings::volumePercent);
+	std::cout << music.getVolume() << std::endl;
 }
 
 int screen1::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	bool doQuit = false;
 
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {

@@ -2,7 +2,7 @@
 #include "CScreen.h"
 
 // Class Declaration for Screen that displays the menu
-class screen0 : public cScreen {
+class screen0: public cScreen {
 private:
 	sf::Text screenTitle;
 
@@ -11,7 +11,6 @@ private:
 	Button buttonSettings;
 	Button buttonQuit;
 	sf::Font font;
-
 public:
 	int Run(sf::RenderWindow &window);
 	bool Init();
@@ -20,5 +19,4 @@ public:
 	void Update();
 
 	~screen0();
-
 };

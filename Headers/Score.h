@@ -5,4 +5,5 @@ struct Score {
 	static int finalScore;
 	static int livesRemaining;
 	static bool didBeatHighScore;
+	static bool newQuestionFromScreen5;
 };

@@ -1,5 +1,6 @@
 #include "Headers/Screen0.h"
 #include "Headers/Constants.h"
+#include "Headers/Settings.h"
 
 #include <iostream>
 // Main Menu Screen
@@ -7,13 +8,22 @@
 bool screen0::Init() {
 	//Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
-	||  !backgroundTexture.loadFromFile("Resources/backgroundMenu.png")
-	||  !buttonStart.loadTexture("Resources/buttonStart.png")
-	||	!buttonHelp.loadTexture("Resources/buttonHelp.png")
-	||	!buttonSettings.loadTexture("Resources/buttonSettings.png")
-	||	!buttonQuit.loadTexture("Resources/buttonQuit.png")){
+		|| !backgroundTexture.loadFromFile("Resources/backgroundMenu.png")
+		|| !buttonStart.loadTexture("Resources/buttonStart.png")
+		|| !buttonHelp.loadTexture("Resources/buttonHelp.png")
+		|| !buttonSettings.loadTexture("Resources/buttonSettings.png")
+		|| !buttonQuit.loadTexture("Resources/buttonQuit.png")
+		|| !buttonClickSoundBuffer.loadFromFile("Resources/buttonClick.wav")
+		|| !music.openFromFile("Resources/backgroundMusic.wav")) {
 		return false;
 	}
+
+	//Initialize Audio
+	buttonClickSound.setBuffer(buttonClickSoundBuffer);
+	buttonClickSound.setVolume(Settings::volumePercent);
+	music.setVolume(Settings::volumePercent);
+	music.setLoop(true);
+	music.play();
 
 	//Initialize Background
 	backgroundSprite.setTexture(backgroundTexture);
@@ -39,7 +49,7 @@ bool screen0::Init() {
 
 	textRect = buttonHelp.sprite.getLocalBounds();
 	buttonHelp.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
-	buttonHelp.sprite.setPosition(WINDOW_X - WINDOW_X/8, WINDOW_Y / 2);
+	buttonHelp.sprite.setPosition(WINDOW_X - WINDOW_X / 8, WINDOW_Y / 2);
 
 	textRect = buttonSettings.sprite.getLocalBounds();
 	buttonSettings.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
@@ -54,10 +64,8 @@ bool screen0::Init() {
 // Game loop for Main Menu Screen
 int screen0::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-	bool doQuit = false;
-
 	while (true) {
-		if (clock.getElapsedTime().asMilliseconds() >= 1000.0/60.0) /* Framerate Limit */ {
+		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
 			int nextScreen = Events(window); // What is the next screen that should be loaded
 			if (nextScreen != getCurrentScreen()) return nextScreen; // Return the next screen to main
@@ -79,10 +87,17 @@ int screen0::Events(sf::RenderWindow &window) {
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (buttonStart.sprite.getGlobalBounds().contains(mousePos)) return screenGame; // If start button clicked
-				if (buttonHelp.sprite.getGlobalBounds().contains(mousePos)) return screenHelp; // If help button clicked
-				if (buttonSettings.sprite.getGlobalBounds().contains(mousePos)) return screenOptions; // If options button clicked
-				if (buttonQuit.sprite.getGlobalBounds().contains(mousePos)) return screenQuitGame; // If quit button clicked
+				bool buttonClicked = true;
+				screen returnValue;
+				if (buttonStart.sprite.getGlobalBounds().contains(mousePos)) returnValue = screenGame; // If start button clicked
+				else if (buttonHelp.sprite.getGlobalBounds().contains(mousePos)) returnValue = screenHelp; // If help button clicked
+				else if (buttonSettings.sprite.getGlobalBounds().contains(mousePos)) returnValue = screenOptions; // If options button clicked
+				else if (buttonQuit.sprite.getGlobalBounds().contains(mousePos)) returnValue = screenQuitGame; // If quit button clicked
+				else buttonClicked = false;
+				if (buttonClicked) {
+					buttonClickSound.play();
+					return returnValue;
+				}
 			}
 		}
 		//If mouse is moved
@@ -97,8 +112,7 @@ int screen0::Events(sf::RenderWindow &window) {
 	return getCurrentScreen();
 }
 
- 
-void screen0::Draw(sf::RenderWindow &window){
+void screen0::Draw(sf::RenderWindow &window) {
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -109,5 +123,6 @@ void screen0::Draw(sf::RenderWindow &window){
 	window.display();
 }
 
-void screen0::Update(){
+void screen0::Update() {
+	buttonClickSound.setVolume(Settings::volumePercent);
 }

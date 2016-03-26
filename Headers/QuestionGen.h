@@ -24,4 +24,3 @@ private:
 	// (ax + by = c and dx + ey = f)
 	std::pair<std::string, std::string> generateSimultaneous();
 };
-
