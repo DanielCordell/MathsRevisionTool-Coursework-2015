@@ -310,7 +310,8 @@ void screen1::Update() {
 	volumeSlider.setPosition(volSldBackRect.left + volSldBackRect.width * (Settings::volumePercent / 100.0f), volumeSlider.getPosition().y);
 	volumeSlider.setScale(1, Settings::volumePercent / 150.0f + 1 / 3.0f);
 
-	if (!Settings::volumeMute)					muteButtonCrossSprite.setColor(sf::Color::Transparent);
+	if (!Settings::volumeMute
+		|| Settings::volumePercent != 0)					muteButtonCrossSprite.setColor(sf::Color::Transparent);
 	else										muteButtonCrossSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::add])	questionButtonAddSprite.setColor(sf::Color::Transparent);
 	else										questionButtonAddSprite.setColor(sf::Color::Black);

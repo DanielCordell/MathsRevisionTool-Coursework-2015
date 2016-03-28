@@ -23,10 +23,11 @@ bool screen3::Init() {
 	std::stringstream buffer;
 	buffer << "This game will have you answering as many maths\n";
 	buffer << "questions as possible in five minutes. See if\n";
-	buffer << "you can beat your high score!\n\n\n";
+	buffer << "you can beat your high score!\n\n";
 	buffer << "You will need a pen and some paper to be\n";
 	buffer << "able to asnwer some of the questions.\n";
-	buffer << "All questions are randomly generated.";
+	buffer << "All questions are randomly generated.\n\n";
+	buffer << "Use the Enter key to submit your answers.\n";
 
 	helpText.setString(buffer.str());
 

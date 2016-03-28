@@ -10,7 +10,7 @@ public:
 
 	// Game Window
 	sf::RenderWindow Window;
-	
+
 	// Settings Class
 	Settings settings;
 
