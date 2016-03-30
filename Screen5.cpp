@@ -18,7 +18,7 @@ bool screen5::Init() {
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
 	//Initializing Text and Buttons
-	screenTitle = sf::Text("Retry Question or New Question?", font, 80);
+	screenTitle = sf::Text("Incorrect Answer, would you like to:", font, 60);
 	answerText = sf::Text("Correct Answer was: ", font, 50);
 	buttonContinue.InitSprite();
 	buttonRetry.InitSprite();
