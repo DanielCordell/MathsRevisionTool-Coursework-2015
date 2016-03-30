@@ -1,5 +1,5 @@
 // Volume Settings // 
-volPer:0
+volPer:47
 volMut:1
 hghScr:6
 // Question Settings // 

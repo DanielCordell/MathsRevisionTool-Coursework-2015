@@ -114,6 +114,7 @@ void screen2::startGame() {
 		hearts[i].setTexture(heartFullTexture);
 	}
 	userInputValidText.setColor(sf::Color::Transparent);
+	userInputText.setString("");
 	GenerateQuestion();
 }
 
@@ -125,7 +126,7 @@ int screen2::Events(sf::RenderWindow & window) {
 
 	if (answerIsIncorrect) {
 		answerIsIncorrect = false;
-		scoreText.setString("");
+		userInputText.setString("");
 		questionAnswered = false;
 		gameClock.pause();
 		Score::answer = questionStore.second;
@@ -269,29 +270,27 @@ void screen2::Update() {
 	}
 	scoreText.setString("Score:     " + std::to_string(scoreCount));
 	highScoreText.setString("Highscore: " + std::to_string(Settings::highScore));
-
 	int minutes = gameClock.getElapsedTime().asSeconds() / 60;
-	int seconds = (gameClock.getElapsedTime().asMilliseconds() / 1000) % 60;
+	int totalSeconds = gameClock.getElapsedTime().asMilliseconds() / 1000;
+	int seconds = totalSeconds % 60;
 	timerText.setString("Time:   " + std::to_string(minutes) + ":" + (seconds < 10 ? "0" : "") + std::to_string(seconds));
-
-	if (seconds >= 250 && seconds < 280) {
+	if (totalSeconds >= 250 && totalSeconds < 280) {
 		timerText.setColor(sf::Color(255, 165, 0));
 	}
-	else if (seconds >= 280 && seconds < 290) {
+	else if (totalSeconds >= 280 && totalSeconds < 290) {
 		timerText.setColor(sf::Color::Red);
 	}
-	else if (seconds >= 290 && seconds < 300) {
-		if (seconds % 2 == 0) {
+	else if (totalSeconds >= 290 && totalSeconds < 300) {
+		if (totalSeconds % 2 == 0) {
 			timerText.setColor(sf::Color::Red);
 		}
 		else {
 			timerText.setColor(sf::Color::Black);
 		}
 	}
-	else if (seconds >= 300) {
+	else if (totalSeconds >= 300) {
 		gameOver = true;
 	}
-
 	questionCorrectSound.setVolume(Settings::volumePercent);
 	questionIncorrectSound.setVolume(Settings::volumePercent);
 }
@@ -311,7 +310,6 @@ int screen2::Run(sf::RenderWindow &window) {
 }
 
 void screen2::GenerateQuestion() {
-	userInputText.setString("");
 	questionStore = questionGen.chooseQuestion();
 	screenTitle.setString(questionStore.first);
 	questionAnswered = false;

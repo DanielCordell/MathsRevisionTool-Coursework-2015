@@ -13,6 +13,7 @@ bool screen0::Init() {
 		|| !buttonHelp.loadTexture("Resources/buttonHelp.png")
 		|| !buttonSettings.loadTexture("Resources/buttonSettings.png")
 		|| !buttonQuit.loadTexture("Resources/buttonQuit.png")
+		// As well as music for cScreen (static variable so same everywhere)
 		|| !buttonClickSoundBuffer.loadFromFile("Resources/buttonClick.wav")
 		|| !music.openFromFile("Resources/backgroundMusic.wav")) {
 		return false;
