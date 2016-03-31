@@ -34,34 +34,39 @@ public:		// Members that can be detected by any function or class.
 	// of inhereted classes, but means that all inherited classes will have functions with these names, which will perform similar
 	// functions.
 	
-	// Game Loop for each screen. Returns an integer value which corresponds to a new screen to display. A value of -1 quits the program.
+	// Game Loop for each screen. Returns an integer value to the MAIN function, which corresponds to a new screen that should display.
+	// A value of -1 (screenQuitGame) signifies that the program should quit.
 	virtual int Run(sf::RenderWindow &window) = 0;
 
 	// Initialises the screen (loads resources and positions objects on screen). Returns false if there is an error, so it can be
-	// detected. Only called once throughout hte program.
+	// detected. Only called once throughout the program.
 	virtual bool Init() = 0;
 
-	// Returns the value of the next screen that should be displayed
+	// Returns the value of the next screen that should be displayed to the Run function, which in turn returns that value to
+	// the main function.
 	virtual int Events(sf::RenderWindow &window) = 0;
 
-	// Updates game logic
+	// Updates game logic, such as the position of elements, their colour, and the text for things such as on screen timers.
 	virtual void Update() = 0;
 
-	// Drawing the game to the screen
+	// Draws all of the game objects to the screen. Required or nothing would appear on the screen even if it is created in a class.
 	virtual void Draw(sf::RenderWindow &window) = 0;
 
-	// Detects if a mouse is hovering over a button and changes the colour of the button if it is
+	// Detects if a mouse is hovering over a button based on the mouse position, and if it is, tints the button slightly grey.
+	// If it isn't then the tint is removed.
 	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::Sprite &button);
 	void buttonHighlightDetect(sf::Vector2i &mousePos, sf::RectangleShape &button);
 
-	// Sets the ID of the current screen
+	// Sets the ID of the variable currentScreen, to assign values to each of the multiple screens.
 	inline void setCurrentScreen(const int _currentScreen) { currentScreen = _currentScreen; }
 
-	// Gets the ID of the current screen
+	// Gets the ID of the current screen, which is compared to the value of the next screen to be loaded. If they are the same then
+	// nothing happens, but if they are different then the current screen is closed and a new screen is open.
 	inline const int& getCurrentScreen() { return currentScreen; }
 };
 
-// Enumeration corresponding to different screen types
+// Enumeration corresponding to different screen types. These are used to uniquelly refer to each screen in code. Each enumeration
+// has a numeric value assigned to it (screenQuitGame = -1, so screenMainMenu = 0, screenOptions = 1 and so on). 
 enum screen {
 	screenQuitGame = -1,
 	screenMainMenu,
