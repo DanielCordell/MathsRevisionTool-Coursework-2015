@@ -1,26 +1,28 @@
 #pragma once
 #include <utility>
 #include <string>
-//Class that stores the question generators
+//Class that stores all of the question generators.
 class questionGenerator {
 public:
-	// Choose a question to generate based on user settings
+	// This function chooses a question to generate based on the users settings, and then returns a pair class which stores two
+	// strings. The first string is the question text that the user will be asked, the second string is the answer that the user's
+	// answer will be compared to.
 	std::pair<std::string, std::string> chooseQuestion();
 private:
-	// (x^2 + bx + c = 0)
+	// This function will generate a quadratic qusetion of the form (x^2 + bx + c = 0)
 	std::pair<std::string, std::string> generateQuadratic();
-	// (a + b = c)
+	// This function will generate an addition question of the form (a + b = c)
 	std::pair<std::string, std::string> generateAdd();
-	// (a - b = c)
+	// This function will generate a subtraction question of the form (a - b = c)
 	std::pair<std::string, std::string> generateSubtract();
-	// (a * b = c)
+	// This function will generate a multiplication question of the form (a * b = c)
 	std::pair<std::string, std::string> generateMultiply();
-	// (a / b = c)
+	// This function will generate a division question of the form (a / b = c)
 	std::pair<std::string, std::string> generateDivide();
-	// (a/b * c/d = e/f)
+	// This function generates a fraction multiplication question of the form (a/b * c/d = e/f)
 	std::pair<std::string, std::string> generateMultiplyFraction();
-	// (ax + b = c)
+	// This function generates a functions question of the form (ax + b = c)
 	std::pair<std::string, std::string> generateFunctions();
-	// (ax + by = c and dx + ey = f)
+	// This function generates a simultaneous equations question of the form (ax + by = c and dx + ey = f)
 	std::pair<std::string, std::string> generateSimultaneous();
 };
