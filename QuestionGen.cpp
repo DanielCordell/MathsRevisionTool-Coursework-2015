@@ -4,16 +4,23 @@
 #include "Headers\Settings.h"
 #include <vector>
 
+// This function chooses a question to generate based on the users settings, and then returns a pair class which stores two strings.
 std::pair<std::string, std::string> questionGenerator::chooseQuestion() {
+	// Create a list of allowed questions, and then iterate through all of the question settings.
 	std::vector<questionTypes> allowedQuestions;
 	for (auto iterator : Settings::questionSettings) {
+		// If the question is true, then insert the question into the allowed questions list.
 		if (iterator.second) {
 			allowedQuestions.insert(allowedQuestions.end(), iterator.first);
 		}
 	}
+	// Generate a random index based on the number of allowed questions.
 	int randomIndex = getRand(0, allowedQuestions.size() - 1);
+	// Sets the type of the question that will be generated to the value of the question from the allowedQuestions list accessed
+	// by the random index.
 	questionTypes questionType = allowedQuestions[randomIndex];
 
+	// A switch statement that will run the generator function for the specific question based on the questionType.
 	switch (questionType) {
 	case questionTypes::add:
 		return generateAdd();
@@ -34,6 +41,7 @@ std::pair<std::string, std::string> questionGenerator::chooseQuestion() {
 	default:
 		break;
 	}
+	//This should never happen
 	return generateAdd();
 }
 
@@ -49,7 +57,7 @@ std::pair<std::string, std::string> questionGenerator::generateQuadratic() {
 
 	bool useLarger = getBool();
 	std::string questionText = ("What is the value of the " + std::string((solution1 == solution2) ? "" : (useLarger ? "largest" : "smallest")) + " solution to this equation?\n\n");
-	questionText.append("x² + " + std::to_string(coeffX) + "x + " + std::to_string(coeffC) + " = 0");
+	questionText.append("xÂ² + " + std::to_string(coeffX) + "x + " + std::to_string(coeffC) + " = 0");
 
 	std::string answerText;
 	if (useLarger) {
@@ -90,7 +98,7 @@ std::pair<std::string, std::string> questionGenerator::generateMultiply() {
 	int solution = value1 * value2;
 
 	std::string questionText = "What is the solution to this equation?\n\n";
-	questionText.append(std::to_string(value1) + " × " + std::to_string(value2) + " = ?");
+	questionText.append(std::to_string(value1) + " Ã— " + std::to_string(value2) + " = ?");
 	std::string answerText = std::to_string(solution);
 
 	return std::make_pair(questionText, answerText);
@@ -101,7 +109,7 @@ std::pair<std::string, std::string> questionGenerator::generateDivide() {
 	int dividend = quotent * divisor;
 
 	std::string questionText = "What is the solution to this equation?\n\n";
-	questionText.append(std::to_string(dividend) + " ÷ " + std::to_string(divisor) + " = ?");
+	questionText.append(std::to_string(dividend) + " Ã· " + std::to_string(divisor) + " = ?");
 	std::string answerText = std::to_string(quotent);
 
 	return std::make_pair(questionText, answerText);
@@ -129,7 +137,7 @@ std::pair<std::string, std::string> questionGenerator::generateMultiplyFraction(
 	}
 
 	std::string questionText = "What is the resulting simplified fraction from this multiplication?\n\n";
-	questionText.append(std::to_string(numerator1) + "/" + std::to_string(denominator1) + " × " + std::to_string(numerator2) + "/" + std::to_string(denominator2));
+	questionText.append(std::to_string(numerator1) + "/" + std::to_string(denominator1) + " Ã— " + std::to_string(numerator2) + "/" + std::to_string(denominator2));
 	std::string answerText = denominatorAnswer == 1 ? std::to_string(numeratorAnswer) : std::to_string(numeratorAnswer) + "/" + std::to_string(denominatorAnswer);
 
 	return std::make_pair(questionText, answerText);
