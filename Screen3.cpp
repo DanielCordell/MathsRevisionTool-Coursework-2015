@@ -12,14 +12,15 @@ bool screen3::Init() {
 		|| !buttonBackToMenu.loadTexture("Resources/buttonReturn.png")) {
 		return false;
 	}
-	//Initialize Background
+	//Initialising Background
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getGlobalBounds().width, WINDOW_Y / backgroundSprite.getGlobalBounds().height);
 
-	//Initializing Text Values
+	//Initialising Text Values
 	screenTitle = sf::Text("Welcome to Number Wizard", font, 50);
 	helpText = sf::Text("", font, 40);
-
+	
+	// Adding the help text to a string buffer.
 	std::stringstream buffer;
 	buffer << "This game will have you answering as many maths\n";
 	buffer << "questions as possible in five minutes. See if\n";
@@ -28,7 +29,8 @@ bool screen3::Init() {
 	buffer << "able to asnwer some of the questions.\n";
 	buffer << "All questions are randomly generated.\n\n";
 	buffer << "Use the Enter key to submit your answers.\n";
-
+	
+	// Putting the text from the buffer into the helpText class.
 	helpText.setString(buffer.str());
 
 	//Positioning Text
@@ -54,11 +56,11 @@ int screen3::Events(sf::RenderWindow & window) {
 	sf::Event event;
 	while (window.pollEvent(event)) {
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
-		// If escape button pressed
+		// If the escape button pressed..
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenMainMenu;
 		}
-		// If mouse button pressed
+		// If the mouse button pressed...
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
@@ -68,7 +70,7 @@ int screen3::Events(sf::RenderWindow & window) {
 				}
 			}
 		}
-		//If mouse is moved
+		//If the mouse is moved...
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			buttonHighlightDetect(mousePos, buttonBackToMenu.sprite);
@@ -87,16 +89,19 @@ void screen3::Draw(sf::RenderWindow & window) {
 }
 
 void screen3::Update() {
+	// No updates needes
 }
 
 int screen3::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-
+	// Loop runs forever until the return statement is met.
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
-			int nextScreen = Events(window); // What is the next screen that should be loaded
-			if (nextScreen != getCurrentScreen()) return nextScreen; // Return the next screen to main
+			// Events function defines the next screen that should be loaded
+			int nextScreen = Events(window); 
+			// Return the next screen to the main function if it is different to the current screen.
+			if (nextScreen != getCurrentScreen()) return nextScreen; 
 			Update();
 			Draw(window);
 		}
