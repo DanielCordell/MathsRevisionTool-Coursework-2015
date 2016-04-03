@@ -3,9 +3,10 @@
 #include "Button.h"
 #include "PauseableClock.h"
 
-// Class Declaration for Screen that displays the Retry Options
+// Class Declaration for Screen that displays the Retry Options. This inherits from the cScreen class.
 class screen5: public cScreen {
 private:
+	// Declaring Class Variables
 	sf::Text screenTitle;
 	sf::Font font;
 	sf::Text answerText;
@@ -13,6 +14,7 @@ private:
 	Button buttonContinue;
 	Button buttonRetry;
 	sf::PauseableClock clock;
+	// Boolean to detect if a new question needs to be generated or not.
 	bool newQuestion;
 
 public:
