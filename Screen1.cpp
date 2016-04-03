@@ -2,10 +2,10 @@
 #include "Headers/Constants.h"
 #include <iostream>
 
-//Settings Screen
+// Settings Screen
 
 bool screen1::Init() {
-	//Loading fonts and textures for this screen
+	// Loading fonts and textures for this screen
 	if (!font.loadFromFile("Resources/font.ttf")
 		|| !backgroundTexture.loadFromFile("Resources/backgroundSettings.png")
 		|| !buttonCrossTexture.loadFromFile("Resources/SettingsCross.png")
@@ -13,11 +13,11 @@ bool screen1::Init() {
 		return false;
 	}
 
-	//Initialize Background
+	// Initialising Background
 	backgroundSprite.setTexture(backgroundTexture);
 	backgroundSprite.setScale(WINDOW_X / backgroundSprite.getLocalBounds().width, WINDOW_Y / backgroundSprite.getLocalBounds().height);
 
-	//Initializing Text Values
+	// Initializing Text Values
 	screenTitle = sf::Text("Settings", font, 50);
 	screenTitleVolume = sf::Text("Volume Options", font, 40);
 	screenTitleQuestions = sf::Text("Enable / Disable Questions", font, 40);
@@ -42,13 +42,15 @@ bool screen1::Init() {
 	questionTextFunctions = sf::Text("Functions", font, 28);
 	questionTextFunctions.setColor(sf::Color::Black);
 
-	//Initializing Volume Slider
+	// Initializing Volume Slider
+	// Creating volume slider triangle
 	volumeSliderBack = sf::VertexArray(sf::Quads, 4);
 	volumeSliderBack[0] = sf::Vertex(sf::Vector2f(12 * WINDOW_X / 64.0f, 22 * WINDOW_Y / 64.0f), sf::Color::Cyan);
 	volumeSliderBack[1] = sf::Vertex(sf::Vector2f(24 * WINDOW_X / 64.0f, 22 * WINDOW_Y / 64.0f), sf::Color(1, 102, 144));
 	volumeSliderBack[2] = sf::Vertex(sf::Vector2f(24 * WINDOW_X / 64.0f, 18 * WINDOW_Y / 64.0f), sf::Color(1, 102, 144));
 	volumeSliderBack[3] = sf::Vertex(sf::Vector2f(12 * WINDOW_X / 64.0f, 21 * WINDOW_Y / 64.0f), sf::Color::Cyan);
-
+	
+	// Positioninig white slider rectangle
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
 	volumeSlider.setSize(sf::Vector2f(WINDOW_X / 128.0f, 5 * volSldBackRect.height / 4.0f));
 	defaultSliderSize = volumeSlider.getSize();
@@ -59,7 +61,7 @@ bool screen1::Init() {
 	volumeText.setOrigin(volumeText.getLocalBounds().width / 2.0f, volumeText.getLocalBounds().height / 2.0f);
 	volumeText.setPosition(18 * WINDOW_X / 64.0f, 14 * WINDOW_Y / 64.0f);
 
-	//Initializing Mute Button
+	// Initializing and positioning Mute Button
 	muteButtonBack.setSize(sf::Vector2f(WINDOW_X / 30.0f, WINDOW_X / 30.0f)); // Using WINDOW_X for both x and y, as it needs to be a square
 	muteButtonBack.setOrigin(sf::Vector2f(muteButtonBack.getLocalBounds().width / 2.0f, muteButtonBack.getLocalBounds().height / 2.0f));
 	muteButtonBack.setPosition((WINDOW_X - volSldBackRect.left - volSldBackRect.width / 2.0f), volSldBackRect.height / 2.0f + volSldBackRect.top);
@@ -75,7 +77,7 @@ bool screen1::Init() {
 	muteText.setOrigin(muteText.getLocalBounds().width / 2.0f, muteText.getLocalBounds().height / 2.0f);
 	muteText.setPosition(WINDOW_X - volumeText.getPosition().x, volumeText.getPosition().y);
 
-	//Initializing Question Buttons
+	//Initializing and positioning Question Buttons
 	questionButtonAddBack.setSize(muteButtonBack.getSize());
 	questionButtonAddBack.setOrigin(muteButtonBack.getOrigin());
 	questionButtonAddBack.setPosition(muteButtonBack.getPosition().x, 18 * WINDOW_Y / 32.0f);
@@ -173,7 +175,7 @@ bool screen1::Init() {
 	questionTextMultiplyFraction.setOrigin(questionTextMultiplyFraction.getLocalBounds().width / 2, questionTextMultiplyFraction.getLocalBounds().height / 2);
 	questionTextMultiplyFraction.setPosition(questionButtonMultiplyFractionBack.getPosition().x, 21 * WINDOW_Y / 32.0f);
 
-	//Positioning Titles and Return Button
+	// Positioning Titles and Return Button
 	sf::FloatRect textRect = screenTitle.getLocalBounds();
 	screenTitle.setOrigin(textRect.width / 2, textRect.height / 2);
 	screenTitle.setPosition(WINDOW_X / 2.0f, WINDOW_Y / 16.0f);
@@ -194,40 +196,45 @@ bool screen1::Init() {
 	buttonBackToMenu.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonBackToMenu.sprite.setPosition(WINDOW_X - 150, WINDOW_Y - 100);
 
-	//Misc
+	// Default value of canVolumeMove
 	canVolumeMove = false;
 	return true;
 }
 
 int screen1::Events(sf::RenderWindow & window) {
+	// Events loop
 	sf::Event event;
 	while (window.pollEvent(event)) {
+		// If the escape key is pressed, or the red x is closed at the top right of the screen, return to the main menu
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenMainMenu;
 		}
-		// If Mouse Pressed
+		// If the left mouse button is pressed...
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-
+				// If the return button is pressed, return the user to the main menu.
 				if (buttonBackToMenu.sprite.getGlobalBounds().contains(mousePos)) {
 					buttonClickSound.play();
 					return screenMainMenu;
 				}
+				// If the volume slider is presed, move the slider and set the new volume to position of the slider
+				// relative to the triangle.
 				else if (volumeSliderBack.getBounds().contains(mousePos)) {
 					canVolumeMove = true;
 					Settings::volumePercent = int((mousePos.x - volumeSliderBack[0].position.x) * 100 / volumeSliderBack.getBounds().width);
 					buttonClickSound.play();
 				}
-
+				// If the mute button is pressed, and the game is muted, unmute the game and set volume to 50.
+				// If the game isn't muted, then mute the game and set volume to 0.
 				else if (muteButtonBack.getGlobalBounds().contains(mousePos)) {
 					Settings::volumeMute = !Settings::volumeMute;
 					if (Settings::volumeMute) Settings::volumePercent = 0;
 					else Settings::volumePercent = 50;
 					buttonClickSound.play();
 				}
-
+				// If any of the question checkboxes are pressed, enable them if they are disabled, and vice versa.
 				else if (questionButtonAddBack.getGlobalBounds().contains(mousePos)) {
 					Settings::questionSettings[questionTypes::add] = !Settings::questionSettings[questionTypes::add];
 					buttonClickSound.play();
@@ -262,10 +269,12 @@ int screen1::Events(sf::RenderWindow & window) {
 				}
 			}
 		}
-		// If Mouse Moved
+		// If the mouse is moved...
 		else if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos(event.mouseMove.x, event.mouseMove.y);
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && canVolumeMove == true) {
+				// If the user is currently clicking on the volume slider, move the slider according to the position
+				// of the mouse, but do not let it move outside of the bounds of the triangle.
 				int mousePosLimited = int(mousePos.x);
 				if (mousePosLimited > volumeSliderBack.getBounds().left + volumeSliderBack.getBounds().width) {
 					mousePosLimited = int(volumeSliderBack.getBounds().left + volumeSliderBack.getBounds().width);
@@ -273,6 +282,7 @@ int screen1::Events(sf::RenderWindow & window) {
 				else if (mousePosLimited < volumeSliderBack.getBounds().left) {
 					mousePosLimited = int(volumeSliderBack.getBounds().left);
 				}
+				// Adjust volume and mute as necessary.
 				Settings::volumePercent = int((mousePosLimited - volumeSliderBack[0].position.x) * 100.0f / volumeSliderBack.getBounds().width);
 				if (Settings::volumePercent == 0) {
 					Settings::volumeMute = true;
@@ -281,6 +291,7 @@ int screen1::Events(sf::RenderWindow & window) {
 					Settings::volumeMute = false;
 				}
 			}
+			// Detect if any of the buttons or checkboxes are being highlighted.
 			buttonHighlightDetect(mousePos, buttonBackToMenu.sprite);
 			buttonHighlightDetect(mousePos, muteButtonBack);
 			buttonHighlightDetect(mousePos, questionButtonAddBack);
@@ -291,27 +302,30 @@ int screen1::Events(sf::RenderWindow & window) {
 			buttonHighlightDetect(mousePos, questionButtonQuadraticBack);
 			buttonHighlightDetect(mousePos, questionButtonSimultaneousBack);
 			buttonHighlightDetect(mousePos, questionButtonSubtractBack);
-			buttonHighlightDetect(mousePos, volumeSlider);
 		}
+		// If the mouse button is released, the volume slider cannot move.
 		else if (event.type == sf::Event::MouseButtonReleased) canVolumeMove = false;
 	}
 	return getCurrentScreen();
 }
 
 void screen1::Update() {
+	// Change the colour of the volume slider depending on if the volume slider is being clicked on.
 	if (canVolumeMove) {
 		volumeSlider.setFillColor(sf::Color(100, 100, 100));
 	}
 	else {
 		volumeSlider.setFillColor(sf::Color::Black);
 	}
-
+	
+	// Reposition the volume slider according to the current volume.
 	sf::FloatRect volSldBackRect = volumeSliderBack.getBounds();
 	volumeSlider.setPosition(volSldBackRect.left + volSldBackRect.width * (Settings::volumePercent / 100.0f), volumeSlider.getPosition().y);
 	volumeSlider.setScale(1, Settings::volumePercent / 150.0f + 1 / 3.0f);
-
-	if (!Settings::volumeMute
-		|| Settings::volumePercent != 0)					muteButtonCrossSprite.setColor(sf::Color::Transparent);
+	
+	// Show/Hide the checkbox crosses depending on if the setting is enabled or disabled.
+	if (!Settings::volumeMute 
+	|| Settings::volumePercent != 0)			muteButtonCrossSprite.setColor(sf::Color::Transparent);
 	else										muteButtonCrossSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::add])	questionButtonAddSprite.setColor(sf::Color::Transparent);
 	else										questionButtonAddSprite.setColor(sf::Color::Black);
@@ -329,10 +343,13 @@ void screen1::Update() {
 	else										questionButtonQuadraticSprite.setColor(sf::Color::Black);
 	if (!Settings::questionSettings[questionTypes::sim])	questionButtonSimultaneousSprite.setColor(sf::Color::Transparent);
 	else										questionButtonSimultaneousSprite.setColor(sf::Color::Black);
-
+	// Set the volume of the music and button press sound to the current volume.
 	buttonClickSound.setVolume(Settings::volumePercent);
+	music.setVolume(Settings::volumePercent);
 }
+
 void screen1::Draw(sf::RenderWindow & window) {
+	// Draw all resources to the screen.
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -381,19 +398,20 @@ void screen1::Draw(sf::RenderWindow & window) {
 	window.draw(questionTextMultiplyFraction);
 
 	window.display();
-
-	music.setVolume(Settings::volumePercent);
-	std::cout << music.getVolume() << std::endl;
-}
-
+	
+// Game loop
 int screen1::Run(sf::RenderWindow &window) {
+	// Defines a clock that will limit the game update rate, so that it does not run as fast as the processor (which will slow
+	// down the computer system over time).
 	sf::Clock clock;
-
+	// Loop runs forever until the return statement is met.
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
-			int nextScreen = Events(window); // What is the next screen that should be loaded
-			if (nextScreen != getCurrentScreen()) return nextScreen; // Return the next screen to main
+			// Events function defines the next screen that should be loaded
+			int nextScreen = Events(window); 
+			// Return the next screen to the main function if it is different to the current screen.
+			if (nextScreen != getCurrentScreen()) return nextScreen; 
 			Update();
 			Draw(window);
 		}
