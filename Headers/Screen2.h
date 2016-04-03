@@ -7,7 +7,7 @@
 // Class Declaration for Screen that displays the Game
 class screen2: public cScreen {
 private:
-	// The on screen text representing the screen title.
+	// The on screen text representing the screen title. On this screen, this is the current question.
 	sf::Text screenTitle;
 	// Class representing the button to take the user back to the main menu.
 	Button buttonBackToMenu;
