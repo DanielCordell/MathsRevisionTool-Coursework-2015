@@ -42,46 +42,50 @@ bool screen5::Init() {
 	textRect = buttonContinue.sprite.getLocalBounds();
 	buttonContinue.sprite.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
 	buttonContinue.sprite.setPosition(2 * WINDOW_X / 3, WINDOW_Y / 2);
-
+	
+	// Start with the internal clock paused.
 	clock.pause();
 	return true;
 }
 
 int screen5::Events(sf::RenderWindow & window) {
+	// If the time on the clock is greater than two seconds, 
 	if (clock.getElapsedTime().asSeconds() > 2) {
+		// Setting this value to true means that the game screen can detect a new question needs to be generated.
 		Score::newQuestionFromScreen5 = true;
+		// Restart and pause the clock ready for the next time.
 		clock.restart();
 		clock.pause();
+		// Reset this value for next time.
 		newQuestion = false;
+		// Return back to the game screen.
 		return screenGame;
 	}
 	sf::Event event;
 	while (window.pollEvent(event)) {
-		// If escape button pressed
+		// If the escape button pressed
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenQuitGame;
 		}
-		// If mouse button pressed
+		// If the mouse button pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				{
-					if (!newQuestion) {
-						if (buttonContinue.sprite.getGlobalBounds().contains(mousePos)) {
-							newQuestion = true;
-							clock.restart();
-							buttonClickSound.play();
-						}
-						if (buttonRetry.sprite.getGlobalBounds().contains(mousePos)) {
-							buttonClickSound.play();
-							return screenGame;
-						}
+				if (!newQuestion) {
+					if (buttonContinue.sprite.getGlobalBounds().contains(mousePos)) {
+						newQuestion = true;
+						clock.restart();
+						buttonClickSound.play();
+					}
+					if (buttonRetry.sprite.getGlobalBounds().contains(mousePos)) {
+						buttonClickSound.play();
+						return screenGame;
 					}
 				}
 			}
 		}
-		//If mouse is moved
+		//If the mouse is moved
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			buttonHighlightDetect(mousePos, buttonContinue.sprite);
@@ -105,14 +109,16 @@ void screen5::Update() {
 	answerText.setString("Correct answer was: " + Score::answer);
 }
 
-int screen5::Run(sf::RenderWindow &window) {
+int screen0::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
-
+	// Loop runs forever until the return statement is met.
 	while (true) {
 		if (clock.getElapsedTime().asMilliseconds() >= 1000.0 / 60.0) /* Framerate Limit */ {
 			clock.restart();
-			int nextScreen = Events(window); // What is the next screen that should be loaded
-			if (nextScreen != getCurrentScreen()) return nextScreen; // Return the next screen to main
+			// Events function defines the next screen that should be loaded
+			int nextScreen = Events(window); 
+			// Return the next screen to the main function if it is different to the current screen.
+			if (nextScreen != getCurrentScreen()) return nextScreen; 
 			Update();
 			Draw(window);
 		}
