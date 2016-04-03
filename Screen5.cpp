@@ -19,7 +19,7 @@ bool screen5::Init() {
 
 	//Initializing Text and Buttons
 	screenTitle = sf::Text("Incorrect Answer, would you like to:", font, 60);
-	answerText = sf::Text("Correct Answer was: ", font, 50);
+	answerText.setString("Correct answer was: " + Score::answer);
 	buttonContinue.InitSprite();
 	buttonRetry.InitSprite();
 
@@ -63,29 +63,31 @@ int screen5::Events(sf::RenderWindow & window) {
 	}
 	sf::Event event;
 	while (window.pollEvent(event)) {
-		// If the escape button pressed
+		// If the escape button was pressed
 		bool escapePressed = event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape;
 		if (event.type == sf::Event::Closed || escapePressed) {
 			return screenQuitGame;
 		}
-		// If the mouse button pressed
+		// If the mouse button was pressed
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (event.mouseButton.button == sf::Mouse::Left) {
 				sf::Vector2f mousePos(sf::Mouse::getPosition(window));
-				if (!newQuestion) {
+				if (!newQuestion) { // Stops the button being pressed more than once.
 					if (buttonContinue.sprite.getGlobalBounds().contains(mousePos)) {
+						// A new questiton should be generated, the clock starts.
 						newQuestion = true;
 						clock.restart();
 						buttonClickSound.play();
 					}
 					if (buttonRetry.sprite.getGlobalBounds().contains(mousePos)) {
+						// Return back to the game screen to retry the question.
 						buttonClickSound.play();
 						return screenGame;
 					}
 				}
 			}
 		}
-		//If the mouse is moved
+		//If the mouse was moved
 		if (event.type == sf::Event::MouseMoved) {
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			buttonHighlightDetect(mousePos, buttonContinue.sprite);
@@ -96,6 +98,7 @@ int screen5::Events(sf::RenderWindow & window) {
 }
 
 void screen5::Draw(sf::RenderWindow & window) {
+	// Draws game objects to the screen.
 	window.clear();
 	window.draw(backgroundSprite);
 	window.draw(screenTitle);
@@ -106,10 +109,10 @@ void screen5::Draw(sf::RenderWindow & window) {
 }
 
 void screen5::Update() {
-	answerText.setString("Correct answer was: " + Score::answer);
+	// No Updates Needed
 }
 
-int screen0::Run(sf::RenderWindow &window) {
+int screen5::Run(sf::RenderWindow &window) {
 	sf::Clock clock;
 	// Loop runs forever until the return statement is met.
 	while (true) {
