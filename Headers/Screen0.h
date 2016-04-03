@@ -1,7 +1,7 @@
 #pragma once
 #include "CScreen.h"
 
-// Class Declaration for Screen that displays the menu. This inherits from the cScreen class.
+// Class Declaration for Screen that displays the main menu. This inherits from the cScreen class.
 class screen0: public cScreen {
 private:
 	// The on screen text representing the screen title.
