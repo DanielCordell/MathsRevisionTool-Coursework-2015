@@ -9,4 +9,4 @@ Required Libraries:
 * SFML 2.3.2
 * That's it
 
-2324 lines of code and counting
+[Click here for a download](https://github.com/DanielCordell/MathsRevisionTool-Coursework-2015/releases/tag/1.0)
