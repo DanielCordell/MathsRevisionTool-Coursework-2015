@@ -5,7 +5,7 @@ A program that generates random maths questions based on user's preferences (fro
 Saves and loads settings from a local file, and keeps a local highscore.
 Has a gui and everything (oooooh).
 
-![](https://raw.githubusercontent.com/DanielCordell/MathsRevisionTool-Coursework-2015/master/nw.png")
+![](https://raw.githubusercontent.com/DanielCordell/MathsRevisionTool-Coursework-2015/master/nw.png)
 
 Required Libraries:
 * SFML 2.3.2
